@@ -1,7 +1,15 @@
+// library
 import React, { Fragment, useEffect, useState } from 'react';
-import styles from '../css/Login.module.css';
 import { Link } from "react-router-dom";
-// import handleLogout from './Logout';
+
+// CSS
+import styles from '../css/Login.module.css';
+
+// element
+import {
+    DefaultInput, Navbar, NavLi, LoginBox, LoginNavLi, BodyContainer, LoginForm
+} from '../assets/styles/element';
+
 
 export default function Login() {
     const [auth, setAuth] = useState(false);
@@ -16,60 +24,58 @@ export default function Login() {
     const [loading, setLoading] = useState(true);
 
     return (
-        <div className={styles.root}>
-            <div className={styles.statusbar}>
-                <Link to={{ pathname: '/' }}> <h5>서담서치</h5> </Link>
-                {auth ? (
-                    <Fragment>
-                        <Link to={{ pathname: '/Dashboard' }}> <div className={styles.status__bar__login__id}>준비중</div></Link>
-                        <a><div className={styles.status__bar__login__new}>로그아웃</div></a>
-                    </Fragment>
-                ) :
-                    <Fragment>
-                        <Link to={{ pathname: '/Login' }}> <div className={styles.status__bar__login__id}>로그인</div></Link>
-                        <Link to={{ pathname: '/signup' }}> <div className={styles.status__bar__login__new}>회원가입</div> </Link >
-                    </Fragment>
-                }
-            </div >
-            <div className={styles.title}>
-                <h3>서담서치</h3>
+        <div className='root'>
+            <div style={{ position: "fixed", width: '270px' }}>
+                <Navbar>
+                    <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
+                    {auth ? (
+                        <Fragment>
+                            <Link to={{ pathname: '/Dashboard' }}> <NavLi>준비중</NavLi></Link>
+                            <a><NavLi>로그아웃</NavLi></a>
+                        </Fragment>
+                    ) :
+                        <Fragment>
+                            <Link to={{ pathname: '/Login' }}> <NavLi>로그인</NavLi></Link>
+                            <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
+                        </Fragment>
+                    }
+                </Navbar>
 
             </div>
+            <BodyContainer>
 
-            <div className={styles.Login__form}>
-                {<form >
+                <LoginForm >
                     <label htmlFor="email"><b>이메일</b></label>
-                    <input
-                        name='email'
+
+                    <DefaultInput name='email'
                         type='email'
                         value={email}
                         required
-                        onChange={e => setEmail(e.target.value)}
-                        placeholder='EMAIL' />
+                        placeholder='Email을 입력하세요'
+                        onChange={e => setEmail(e.target.value)} />
                     <label htmlFor="password"><b>비밀번호</b></label>
-                    <input name='password'
+                    <DefaultInput name='password'
                         type='password'
                         value={password}
                         required
                         onChange={e => setPassword(e.target.value)}
-                        placeholder='PASSWORD'
-                    />
-                    <button>로그인</button>
-                </form>}
+                        placeholder='PASSWORD' />
+                    <button >로그인</button>
+                </LoginForm>
                 <div className={styles.Login__form__find}>
                     <Link to={{ pathname: '/' }}>
-                        <div className={styles.Login__form__find__id}>아이디 찾기</div>
+                        <LoginNavLi >아이디 찾기</LoginNavLi>
                     </Link>
                     <Link to={{ pathname: '/' }}>
-                        <div className={styles.Login__form__find__pass}>비밀번호 찾기</div>
+                        <LoginNavLi >비밀번호 찾기</LoginNavLi>
                     </Link>
                     <Link to={{ pathname: '/signup' }}>
-                        <div className={styles.Login__form__find__admiss}>회원가입</div>
+                        <LoginNavLi >회원가입</LoginNavLi>
                     </Link>
                 </div>
 
                 {errors === true && <h4>로그인 할 수 없습니다.</h4>}
-            </div>
+            </BodyContainer>
         </div>
     );
 }
