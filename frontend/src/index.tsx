@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom';
 // import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+// reset
+import { GlobalStyle } from "./assets/styles/global-styles";
+
+import { theme, nextTheme } from "./assets/styles/theme";
+import { ThemeProvider } from "styled-components";
 import './index.css';
+import './assets/styles/fontAwesome';
+
 ReactDOM.render(
-  <React.StrictMode>
+  <ThemeProvider theme={nextTheme}>
+    <GlobalStyle />
     <App />
-  </React.StrictMode>,
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
