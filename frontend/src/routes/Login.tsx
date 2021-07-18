@@ -1,81 +1,142 @@
 // library
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-
+// import ch
 // CSS
 import styles from '../css/Login.module.css';
 
 // element
 import {
     DefaultInput, Navbar, NavLi, LoginBox, LoginNavLi, BodyContainer, LoginForm
+    , LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, mainColor, ErrorMsg
 } from '../assets/styles/element';
-
+// img
+import LOGO from '../Simg.png';
+import { Http2ServerRequest } from 'http2';
+import { couldStartTrivia } from 'typescript';
 
 export default function Login() {
-    const [auth, setAuth] = useState(false);
-    useEffect(() => {
-        if (localStorage.getItem('token') !== null) {
-            setAuth(false);
-        }
-    }, [])
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState(false);
+    const [errors, setErrors] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [autoLoginOpt, setAutoLoginOpt] = useState(true);
+    const [auth, setAuth] = useState(false);
+    const [state, setState] = useState("");
+    const [token, setToken] = useState('');
+    useEffect(() => {
+
+
+        if (token.length > 1) {
+            window.location.replace('http://localhost:3000/#/');
+            // set(false);
+        } else {
+            setLoading(false);
+        }
+    }, [token])
+
+
+
+    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const user = {
+            username: email,
+            password: password
+        }
+        fetch('https://kshired.com/v1/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        }).then(res => res.json())
+            .then(resdata => {
+                if (resdata.status === 'success') {
+                    console.log('인증된 회원 로그인');
+                    chrome.storage.local.set({ Refresh: resdata.data.accsessToken, Access: resdata.data.refreshToken }, () => {
+                    });
+                    chrome.storage.local.get(null, function (all) {
+                        setToken(JSON.stringify(all))
+                        console.log(JSON.stringify(all))
+                    })
+
+                }
+                else if (resdata.status === "fail") {
+                    if (resdata.data.username) {
+                        console.log("존재하지 않는 아이디입니다");
+                        setState("존재하지 않는 아이디입니다");
+
+                    }
+                    else if (resdata.data.authenticated) {
+                        console.log("인증되지 않았습니다");
+                        setState("인증되지 않았습니다");
+
+                    } else if (resdata.data.password) {
+                        console.log("비밀번호를 확인해주세요");
+                        setState("비밀번호를 확인해주세요");
+                    } else {
+                        throw new Error("서버가 터졌습니다..")
+                    }
+                }
+            }).catch(err => {
+                // 서버가 터졌을때 에러처리 구현예정
+            });
+
+    }
 
     return (
         <div className='root'>
-            <div style={{ position: "fixed", width: '270px' }}>
-                <Navbar>
-                    <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
-                    {auth ? (
-                        <Fragment>
-                            <Link to={{ pathname: '/Dashboard' }}> <NavLi>준비중</NavLi></Link>
-                            <a><NavLi>로그아웃</NavLi></a>
-                        </Fragment>
-                    ) :
-                        <Fragment>
-                            <Link to={{ pathname: '/Login' }}> <NavLi>로그인</NavLi></Link>
-                            <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
-                        </Fragment>
-                    }
-                </Navbar>
 
-            </div>
+            <Navbar>
+                <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
+                {auth ? (
+                    <Fragment>
+                        <Link to={{ pathname: '/Dashboard' }}> <NavLi>준비중</NavLi></Link>
+                        <a><NavLi>로그아웃</NavLi></a>
+                    </Fragment>
+                ) :
+                    <Fragment>
+                        <Link to={{ pathname: '/Login' }}> <NavLi>로그인</NavLi></Link>
+                        <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
+                    </Fragment>
+                }
+            </Navbar>
+
+
             <BodyContainer>
-
-                <LoginForm >
-                    <label htmlFor="email"><b>이메일</b></label>
-
-                    <DefaultInput name='email'
-                        type='email'
+                <LoginImg src={LOGO}></LoginImg>
+                <LoginForm onSubmit={handleLogin}>
+                    <DefaultInput
                         value={email}
                         required
-                        placeholder='Email을 입력하세요'
+                        placeholder='ID'
                         onChange={e => setEmail(e.target.value)} />
-                    <label htmlFor="password"><b>비밀번호</b></label>
+
                     <DefaultInput name='password'
                         type='password'
                         value={password}
                         required
                         onChange={e => setPassword(e.target.value)}
-                        placeholder='PASSWORD' />
-                    <button >로그인</button>
+                        placeholder='Password' />
+                    <LoginButton>로그인</LoginButton>
                 </LoginForm>
-                <div className={styles.Login__form__find}>
+                <ErrorMsg>{state}</ErrorMsg>
+                <LoginNavBar>
+
+                    {autoLoginOpt ? <LoginNavLiClicked onClick={() => setAutoLoginOpt(!autoLoginOpt)}><li style={{ color: '#f84e75' }}>자동로그인</li></LoginNavLiClicked>
+                        : <LoginNavLi onClick={() => setAutoLoginOpt(!autoLoginOpt)}><li>자동로그인</li></LoginNavLi>}
+
+
+
                     <Link to={{ pathname: '/' }}>
-                        <LoginNavLi >아이디 찾기</LoginNavLi>
-                    </Link>
-                    <Link to={{ pathname: '/' }}>
-                        <LoginNavLi >비밀번호 찾기</LoginNavLi>
+                        <LoginNavLi ><li>비밀번호찾기</li></LoginNavLi>
                     </Link>
                     <Link to={{ pathname: '/signup' }}>
-                        <LoginNavLi >회원가입</LoginNavLi>
+                        <LoginNavLi ><li>회원가입</li></LoginNavLi>
                     </Link>
-                </div>
+                </LoginNavBar>
 
-                {errors === true && <h4>로그인 할 수 없습니다.</h4>}
             </BodyContainer>
-        </div>
+        </div >
     );
 }

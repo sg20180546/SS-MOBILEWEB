@@ -55,14 +55,14 @@ const GlobalStyle = createGlobalStyle`
       text-decoration: none;
   }
   body{
-      width: 270px;
+    //   width: 270px;
   }
   .root{
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 350px;
-      width: 270px;
+      height: 450px;
+      width: 360px;
       background-color: #FFFFFF;
       border: 5px solid #f84e75;
   }
