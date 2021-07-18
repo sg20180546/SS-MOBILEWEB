@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import SPosts from '../components/post';
 import BoardName from '../components/Boardname';
 
-import CSS from 'csstype';
 import {
     SearchInput, Navbar, NavLi, Banner, SearchButton,
     BodyContainer, HomeSpan, mainColor, Gray, TableBodyContainer, Table, SearchForm
