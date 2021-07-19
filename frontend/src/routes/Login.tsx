@@ -10,8 +10,7 @@ import {
 } from '../assets/styles/element';
 // img
 import LOGO from '../Simg.png';
-import { Http2ServerRequest } from 'http2';
-import { couldStartTrivia } from 'typescript';
+
 
 export default function Login() {
     const [email, setEmail] = useState('');

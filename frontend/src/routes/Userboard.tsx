@@ -6,7 +6,6 @@ import {
     , BodyContainer, HomeSpan, mainColor, Gray, SearchForm
 } from '../assets/styles/element';
 
-import handleLogout from '../hook/Logout';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -24,6 +23,13 @@ export default function Home() {
             setAuth(true);
         }
     }, [])
+
+    const onClick = (event: any) => {
+        event.preventDefault()
+        console.log('logout')
+        chrome.storage.local.clear()
+        window.location.replace('http://localhost:3000/#/')
+    }
 
     const [posts, setPosts] = useState([]);
     const getSsodamPosts = () => {
@@ -51,7 +57,7 @@ export default function Home() {
                 {auth ? (
                     <Fragment>
                         <Link to={{ pathname: '/Dashboard' }}> <NavLi>회원정보</NavLi></Link>
-                        <button onClick={handleLogout}> <NavLi >로그아웃</NavLi></button>
+                        <NavLi onClick={onClick} >로그아웃</NavLi>
                     </Fragment>
                 ) :
                     <Fragment>

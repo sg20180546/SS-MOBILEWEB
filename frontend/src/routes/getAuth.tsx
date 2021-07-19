@@ -6,21 +6,23 @@ import {
 } from '../assets/styles/element';
 
 import LOGO from '../Simg.png';
-export default function getAuth() {
+export default function GetAuth() {
     const [Email, setEmail] = useState("");
     const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("");
-
+    const [token, setToken] = useState('');
     const [auth, setAuth] = useState(false);
 
-
-
-
     useEffect(() => {
-        if (localStorage.getItem('token') !== null) {
-            setAuth(false);
+        chrome.storage.local.get(null, function (all) {
+            setToken(JSON.stringify(all))
+        })
+        if (token.length > 5) {
+            setAuth(true);
         }
-    }, [])
+    }, [token])
+
+
 
     return (
 

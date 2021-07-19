@@ -19,7 +19,7 @@ export default function Home() {
         event.preventDefault()
         console.log('logout')
         chrome.storage.local.clear()
-        window.location.replace('http://localhost:3000/#/')
+        setToken('');
     }
 
 
@@ -33,12 +33,6 @@ export default function Home() {
         chrome.storage.local.get(null, function (all) {
             setToken(JSON.stringify(all))
         })
-        // 이 부분을 이렇게 처리해도 될까요?
-        // auth는 로그인된 회원/비회원 화면을 구분하기 위한 bool값인데
-        // 만약 token이 없는 비회원이 token을 길이 5이상의 ㅁㄴㅇㄻㄴㅇㄹ 등으로 set 했을때 마치 '회원이 로그인 된 화면을 보여줍니다'
-        // 하지만 검색 request header에 jwt를 함께 보내기때문에
-        // chrome.stroge.local.set 등으로 조작하여도 api에서 verify한후 unAuthroized response를 확인하면
-        // 로그아웃 시킬 예정입니다.
         if (token.length > 5) {
             setAuth(true);
         }
