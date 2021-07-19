@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react';
+import styles from '../css/Home.module.css';
 import { Link } from "react-router-dom";
 import {
     SearchInput, Navbar, NavLi, Banner, SearchButton, HomeImg
@@ -14,44 +15,37 @@ import LOGO from '../Simg.png';
 
 export default function Home() {
 
+    const [auth, setAuth] = useState(false);
+    const [searchWord, setSearchWord] = useState('');
+    const [tryLogin, setTryLogin] = useState(false);
+    useEffect(() => {
+        if (localStorage.getItem('token') !== null) {
+            setAuth(true);
+        }
+    }, [])
 
     const onClick = (event: any) => {
         event.preventDefault()
         console.log('logout')
         chrome.storage.local.clear()
-        setToken('');
+        window.location.replace('http://localhost:3000/#/')
     }
 
-
-
-    const [auth, setAuth] = useState(false);
-    const [searchWord, setSearchWord] = useState('');
-    const [token, setToken] = useState('');
-
-
-    useEffect(() => {
-        chrome.storage.local.get(null, function (all) {
-            setToken(JSON.stringify(all))
-        })
-        if (token.length > 5) {
-            setAuth(true);
-        }
-    }, [token])
-
-
-    // 검색기능 - 추후 구현
+    const [posts, setPosts] = useState([]);
     const getSsodamPosts = () => {
         if (localStorage.getItem('token') !== null) {
+            // animation, transition
             return;
         } else {
             const Search = {
                 keyword: searchWord,
                 searchOption: '',
-                // token: localStorage.getItem('token')
+                token: localStorage.getItem('token')
             }
             fetch('').then()
             window.location.replace('http://localhost:3000/#/Search');
         }
+        // return;
     }
 
 
@@ -63,7 +57,6 @@ export default function Home() {
                 {auth ? (
                     <Fragment>
                         <Link to={{ pathname: '/Dashboard' }}> <NavLi>회원정보</NavLi></Link>
-
                         <NavLi onClick={onClick} >로그아웃</NavLi>
                     </Fragment>
                 ) :
@@ -74,14 +67,7 @@ export default function Home() {
                 }
             </Navbar>
             <BodyContainer>
-                <HomeImg src={LOGO} ></HomeImg>
-                <SearchForm>
-                    <SearchInput onChange={(e) => setSearchWord(e.target.value)}></SearchInput>
-                    <SearchButton onClick={() => getSsodamPosts()}><FontAwesomeIcon icon="search" size="xs" /></SearchButton>
-                    {auth ? <HomeSpan>검색어를 입력하세요</HomeSpan> :
-                        <HomeSpan color='#B7B8CE' >서담서치 0.0.1v<br />
-                            로그인 해주세요.</HomeSpan>}
-                </SearchForm>
+
             </BodyContainer>
 
 
