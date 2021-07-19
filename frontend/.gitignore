@@ -3,6 +3,10 @@
 # dependencies
 /node_modules
 node_modules
+<<<<<<< HEAD
+=======
+test.tsx
+>>>>>>> 9d02a04ffede1661c146ab4928907532f0b5beb2
 /.pnp
 .pnp.js
 
