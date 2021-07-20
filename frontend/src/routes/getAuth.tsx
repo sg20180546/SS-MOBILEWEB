@@ -11,6 +11,8 @@ import LOGO from '../auth.png';
 
 export default function GetAuth() {
     const [copied, copy, setCopied] = useCopy("RWQEqwerwqe");
+
+
     const copyText = (event: any) => {
         event.preventDefault();
         copy();
@@ -18,6 +20,7 @@ export default function GetAuth() {
             setCopied(false);
         }, 3000);
     }
+
     const [token, setToken] = useState<any | null>("");
     const [authString, setAuthString] = useState<any | null>("");
     useEffect(() => {
@@ -43,6 +46,7 @@ export default function GetAuth() {
     }
 
 
+
     return (
 
         <div className='root'>
@@ -60,10 +64,10 @@ export default function GetAuth() {
                 <Banner>회원 인증하기</Banner>
                 <SmallImg src={LOGO}></SmallImg>
                 <h5>서담서치 이용을 위해선, 회원 인증이 필요합니다 !</h5>
-                <GrayBox ><GrayBoxMsg >{authString}</GrayBoxMsg>
+                <GrayBox onClick={copyText}><GrayBoxMsg >{authString}</GrayBoxMsg>
                 </GrayBox >
-                {/* {copied ? <h1 style={{ color: mainColor }}>복사가 완료되었습니다!</h1>
-                    : <h1 style={{ color: mainColor }}>서담 인증게시판에 위 난수를 댓글로 달아주세요.</h1>} */}
+                {copied ? <h1 style={{ color: mainColor }}>복사가 완료되었습니다!</h1>
+                    : <h1 style={{ color: mainColor }}>서담 인증게시판에 위 난수를 댓글로 달아주세요.</h1>}
 
                 <GrayBox >
                     <GrayBoxMsg onClick={useChromeTab}>http://ssodam.com/</GrayBoxMsg>
