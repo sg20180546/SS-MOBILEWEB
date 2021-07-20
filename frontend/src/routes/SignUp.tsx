@@ -14,10 +14,15 @@ export default function SignUp() {
     const [authString, setAuthString] = useState('')
 
     useEffect(() => {
-        if (auth) {
+        if (authString.length > 10) {
             window.location.replace('http://localhost:3000/?#/getAuth');
         }
-    }, [auth]);
+        if (password1 === password2 && password2.length > 2) {
+            setState('비밀번호가 일치합니다');
+        } else {
+            setState('');
+        }
+    }, [authString, password2, password1, Email]);
 
 
 
@@ -25,7 +30,6 @@ export default function SignUp() {
         if (password1 !== password2) {
             event.preventDefault();
             setState('비밀번호가 일치하지 않습니다')
-            // return;
         }
         else {
             const userInfo = {
@@ -41,10 +45,11 @@ export default function SignUp() {
             }).then(res => res.json())
                 .then(resdata => {
                     console.log(resdata);
-                    if (resdata.status == "succsess") {
-                        alert("준회원 회원가입이 완료되었습니다.")
+                    if (resdata.status == "success") {
+                        alert("인증 페이지로 이동합니다.");
+                        localStorage.setItem('authString', resdata.data.authString)
                         setAuthString(resdata.data.authString);
-                        setAuth(true);
+                        console.log(authString);
                     } else {
                         if (resdata.data.username) {
                             console.log('이미 존재하는 아이디입니다')
