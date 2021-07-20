@@ -1,6 +1,5 @@
-import styled, { createGlobalStyle, css } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { normalize } from "styled-normalize";
-// import from "./font.woff";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -54,8 +53,10 @@ const GlobalStyle = createGlobalStyle`
       color: inherit;
       text-decoration: none;
   }
+  
   body{
-    //   width: 270px;
+        width: 270px;
+        font-family: 'Poor Story';
   }
   .root{
       display: flex;
@@ -66,13 +67,8 @@ const GlobalStyle = createGlobalStyle`
       background-color: #FFFFFF;
       border: 5px solid #f84e75;
   }
-  @font-face{
-    font-family: 'SEBANG_Gothic_Bold';
-    src: url('./SEBANG_Gothic.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    }
-
+  
+  
 `;
 
 
@@ -80,4 +76,3 @@ const GlobalStyle = createGlobalStyle`
 
 
 export { GlobalStyle };
-// export default Input;

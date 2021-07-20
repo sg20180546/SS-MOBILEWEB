@@ -1,7 +1,8 @@
 {
   "name": "서담서치",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "description": "서담서치0.0.1v",
   "version": "1.0",

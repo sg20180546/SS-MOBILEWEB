@@ -1,8 +1,4 @@
 import React, { FormEvent, Fragment, useEffect, useState } from 'react';
-<<<<<<< HEAD
-=======
-import styles from '../css/SignUp.module.css';
->>>>>>> 9d02a04ffede1661c146ab4928907532f0b5beb2
 import { Link } from "react-router-dom";
 import {
     DefaultInput, Navbar, NavLi, BodyContainer, LoginButton, LoginForm, LoginImg, ErrorMsg
@@ -15,18 +11,25 @@ export default function SignUp() {
     const [password2, setPassword2] = useState("");
     const [auth, setAuth] = useState(false);
     const [state, setState] = useState('');
-<<<<<<< HEAD
     const [authString, setAuthString] = useState('')
 
     useEffect(() => {
-        if (auth) {
+        if (authString.length > 10) {
             window.location.replace('http://localhost:3000/?#/getAuth');
-=======
+        }
+        if (password1 === password2 && password2.length > 2) {
+            setState('비밀번호가 일치합니다');
+        } else {
+            setState('');
+        }
+    }, [authString, password2, password1, Email]);
+
+
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         if (password1 !== password2) {
             event.preventDefault();
             setState('비밀번호가 일치하지 않습니다')
-            // return;
         }
         else {
             const userInfo = {
@@ -42,54 +45,11 @@ export default function SignUp() {
             }).then(res => res.json())
                 .then(resdata => {
                     console.log(resdata);
-                    if (resdata.status == "succsess") {
-                        alert("회원가입이 완료되었습니다.")
-                        window.location.replace('http://localhost:3000/?#/SignUp2')
-                    } else {
-                        if (resdata.data.username) {
-                            console.log('이미 존재하는 아이디입니다')
-                            setState('이미 존재하는 아이디입니다')
-                        } else {
-                        }
-                    }
-                })
-
-
-        }
-    }
-    useEffect(() => {
-        if (localStorage.getItem('token') !== null) {
-            window.location.replace('http://localhost:3000/#/')
->>>>>>> 9d02a04ffede1661c146ab4928907532f0b5beb2
-        }
-    }, [auth]);
-
-
-
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        if (password1 !== password2) {
-            event.preventDefault();
-            setState('비밀번호가 일치하지 않습니다')
-            // return;
-        }
-        else {
-            const userInfo = {
-                username: Email,
-                password: password1
-            }
-            fetch('https://kshired.com/v1/user/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userInfo)
-            }).then(res => res.json())
-                .then(resdata => {
-                    console.log(resdata);
-                    if (resdata.status == "succsess") {
-                        alert("준회원 회원가입이 완료되었습니다.")
+                    if (resdata.status == "success") {
+                        alert("인증 페이지로 이동합니다.");
+                        localStorage.setItem('authString', resdata.data.authString)
                         setAuthString(resdata.data.authString);
-                        setAuth(true);
+                        console.log(authString);
                     } else {
                         if (resdata.data.username) {
                             console.log('이미 존재하는 아이디입니다')

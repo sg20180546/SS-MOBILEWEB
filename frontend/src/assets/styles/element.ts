@@ -1,6 +1,5 @@
-import { generateKeyPairSync } from "crypto";
-import styled, { createGlobalStyle, css } from "styled-components";
-import { normalize } from "styled-normalize";
+
+import styled, { css } from "styled-components";
 
 const mainColor = "#f84e75"
 const Gray = "#B7B8CE"
@@ -98,8 +97,10 @@ const container = styled.div`
 
 
 const Banner = styled(container)`
-    top:50px;
-    height: 10px;
+    justify-content:center;
+    font-size: 30px;
+    top:60px;
+    height: 50px;
 
 `;
 const BodyContainer = styled(container)`
@@ -121,7 +122,13 @@ const LoginBox = styled(container)`
     height: 250px;
 
 `;
-
+const GrayBox = styled(container)`
+    background-color: #d1d1d3;
+    margin: 15px 0px;
+    height: 40px;
+    width: 80%;
+    border-radius: 20px;
+ `;
 
 
 
@@ -135,6 +142,9 @@ const HomeImg = styled(Img)`
 `;
 const LoginImg = styled(Img)`
     height: 200px;
+`;
+const SmallImg = styled(Img)`
+    height: 120px;
 `;
 
 // 
@@ -168,6 +178,13 @@ const HomeSpan = styled.span`
     position: relative;
     text-align: center;
 `;
+const GrayBoxMsg = styled.span`
+    display:inline-block;
+    position:relative;
+    top:12px;
+    cursor:pointer;
+`;
+
 
 const ErrorMsg = styled.span`
     display: inline-block;
@@ -210,5 +227,7 @@ const TableHead = styled.thead`
 export {
     SearchInput, DefaultInput, Navbar, NavLi, Banner, SearchButton, HomeImg, BodyContainer, LoginBox, LoginForm
     , LoginNavLi, LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, mainColor, Gray,
-    HomeSpan, Table, TableHead, TableBodyContainer, SearchForm, ErrorMsg
+    HomeSpan, Table, TableHead, TableBodyContainer, SearchForm,
+    ErrorMsg, GrayBox, SmallImg, GrayBoxMsg
+
 }
