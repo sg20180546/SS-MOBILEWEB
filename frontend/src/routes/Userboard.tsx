@@ -7,8 +7,6 @@ import {
 } from '../assets/styles/element';
 
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import LOGO from '../Simg.png';
 
 

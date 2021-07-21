@@ -1,20 +1,16 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Link } from "react-router-dom";
 
-import SPosts from '../components/post';
-import BoardName from '../components/Boardname';
+// import SPosts from '../components/post';
+// import BoardName from '../components/Boardname';
 
-<<<<<<< HEAD
-=======
-import CSS from 'csstype';
->>>>>>> 9d02a04ffede1661c146ab4928907532f0b5beb2
 import {
-    SearchInput, Navbar, NavLi, Banner, SearchButton,
-    BodyContainer, HomeSpan, mainColor, Gray, TableBodyContainer, Table, SearchForm
+    SearchInput, Navbar, NavLi, SearchButton,
+    BodyContainer, TableBodyContainer, Table, SearchForm
 } from '../assets/styles/element';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 
 
@@ -148,7 +144,7 @@ export default function Search() {
 
                 <SearchForm>
                     <SearchInput onChange={(e) => setSearchWord(e.target.value)}></SearchInput>
-                    <SearchButton onClick={() => getSsodamPosts()}><FontAwesomeIcon icon="search" size="xs" /></SearchButton>
+                    <SearchButton onClick={() => getSsodamPosts()}></SearchButton>
                 </SearchForm>
             </BodyContainer>
 

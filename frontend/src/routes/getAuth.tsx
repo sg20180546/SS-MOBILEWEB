@@ -1,26 +1,49 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import styles from '../css/SignUp.module.css';
 import { Link } from "react-router-dom";
+// import useCopy from 'use-copy';]
+import useCopy from 'use-copy';
 import {
-    DefaultInput, Navbar, NavLi, BodyContainer, LoginButton, LoginForm, LoginImg
+    Navbar, NavLi, BodyContainer, GrayBox, Banner, SmallImg, mainColor, GrayBoxMsg
 } from '../assets/styles/element';
 
-import LOGO from '../Simg.png';
-export default function GetAuth() {
-    const [Email, setEmail] = useState("");
-    const [password1, setPassword1] = useState("")
-    const [password2, setPassword2] = useState("");
-    const [token, setToken] = useState('');
-    const [auth, setAuth] = useState(false);
+import LOGO from '../auth.png';
 
+export default function GetAuth() {
+    const [copied, copy, setCopied] = useCopy("RWQEqwerwqe");
+
+
+    const copyText = (event: any) => {
+        event.preventDefault();
+        copy();
+        setTimeout(() => {
+            setCopied(false);
+        }, 3000);
+    }
+
+    const [token, setToken] = useState<any | null>("");
+    const [authString, setAuthString] = useState<any | null>("");
     useEffect(() => {
-        chrome.storage.local.get(null, function (all) {
-            setToken(JSON.stringify(all))
-        })
-        if (token.length > 5) {
-            setAuth(true);
+        if (localStorage.getItem('authString') || !localStorage.getItem('Access')) {
+            // setAuthString(localStorage.getItem('authString'));
+            setAuthString('wqr9tew8qr9et89qw8t')
+        } else {
+            alert('잘못된 접근입니다!');
+            window.location.replace('http://localhost:3000/?#/');
         }
-    }, [token])
+
+        // Chrome Storage api
+        // chrome.storage.local.get(authString, function (auth) {
+        //     setAuthString(auth);
+        // })
+        // if (!authString) {
+        //     alert('잘못된 접근입니다!');
+        //     window.location.replace('http://localhost:3000/?#/');
+        // }
+    }, [authString])
+    const useChromeTab = () => {
+
+    }
 
 
 
@@ -30,24 +53,25 @@ export default function GetAuth() {
 
             <Navbar>
                 <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
-                {auth ? (
-                    <Fragment>
-                        <Link to={{ pathname: '/Dashboard' }}> <NavLi>준비중</NavLi></Link>
-                        <a><NavLi>로그아웃</NavLi></a>
-                    </Fragment>
-                ) :
-                    <Fragment>
-                        <Link to={{ pathname: '/Login' }}> <NavLi>로그인</NavLi></Link>
-                        <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
-                    </Fragment>
-                }
+
+                <Link to={{ pathname: '/Login' }}> <NavLi>로그인</NavLi></Link>
+                <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
+
             </Navbar>
 
 
             <BodyContainer>
-                <p>서담 인증 게시판에 아래 문장을 제목으로 글을 써주세요.</p>
+                <Banner>회원 인증하기</Banner>
+                <SmallImg src={LOGO}></SmallImg>
+                <h5>서담서치 이용을 위해선, 회원 인증이 필요합니다 !</h5>
+                <GrayBox onClick={copyText}><GrayBoxMsg >{authString}</GrayBoxMsg>
+                </GrayBox >
+                {copied ? <h1 style={{ color: mainColor }}>복사가 완료되었습니다!</h1>
+                    : <h1 style={{ color: mainColor }}>서담 인증게시판에 위 난수를 댓글로 달아주세요.</h1>}
 
-                <p>발 달린 말이 천리를 간다.</p>
+                <GrayBox >
+                    <GrayBoxMsg onClick={useChromeTab}>http://ssodam.com/</GrayBoxMsg>
+                </GrayBox>
             </BodyContainer>
         </div>
     );

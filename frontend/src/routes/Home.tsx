@@ -1,12 +1,10 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import {
-    SearchInput, Navbar, NavLi, Banner, SearchButton, HomeImg
-    , BodyContainer, HomeSpan, mainColor, Gray, SearchForm
+    SearchInput, Navbar, NavLi, SearchButton, HomeImg
+    , BodyContainer, HomeSpan, SearchForm
 } from '../assets/styles/element';
 
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import LOGO from '../Simg.png';
 
@@ -17,8 +15,10 @@ export default function Home() {
 
     const onClick = (event: any) => {
         event.preventDefault()
-        console.log('logout')
-        chrome.storage.local.clear()
+        localStorage.clear();
+        // Chrome Storage api
+        // chrome stoarge log out
+        // chrome.storage.local.clear()
         setToken('');
     }
 
@@ -30,11 +30,16 @@ export default function Home() {
 
 
     useEffect(() => {
-        chrome.storage.local.get(null, function (all) {
-            setToken(JSON.stringify(all))
-        })
-        if (token.length > 5) {
+        setToken(localStorage.getItem('Refresh') + '/' + localStorage.getItem('Access'));
+        console.log(localStorage.getItem('Refresh') + '/' + localStorage.getItem('Access'));
+        // Chrome Storage API
+        // chrome.storage.local.get(null, function (all) {
+        //     setToken(JSON.stringify(all))
+        // })
+        if (token.length > 30) {
             setAuth(true);
+        } else {
+            setAuth(false);
         }
     }, [token])
 
@@ -77,7 +82,7 @@ export default function Home() {
                 <HomeImg src={LOGO} ></HomeImg>
                 <SearchForm>
                     <SearchInput onChange={(e) => setSearchWord(e.target.value)}></SearchInput>
-                    <SearchButton onClick={() => getSsodamPosts()}><FontAwesomeIcon icon="search" size="xs" /></SearchButton>
+                    <SearchButton onClick={() => getSsodamPosts()}>ㅇ</SearchButton>
                     {auth ? <HomeSpan>검색어를 입력하세요</HomeSpan> :
                         <HomeSpan color='#B7B8CE' >서담서치 0.0.1v<br />
                             로그인 해주세요.</HomeSpan>}

@@ -10,7 +10,7 @@ const theme: DefaultTheme = {
 
 const nextTheme: DefaultTheme = {
     // basicWidth: "600px",
-    // color: {
+    // color: {f
     //     main: "#1c1f25",
     //     sub: "#fff"
     // }

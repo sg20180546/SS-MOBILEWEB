@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 // element
 import {
-    DefaultInput, Navbar, NavLi, LoginBox, LoginNavLi, BodyContainer, LoginForm
-    , LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, mainColor, ErrorMsg
+    DefaultInput, Navbar, NavLi, LoginNavLi, BodyContainer, LoginForm
+    , LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, ErrorMsg
 } from '../assets/styles/element';
 // img
 import LOGO from '../Simg.png';
@@ -14,7 +14,7 @@ import LOGO from '../Simg.png';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState(true);
+    const [authString, setAuthString] = useState<any | null>(false);
     const [loading, setLoading] = useState(true);
     const [autoLoginOpt, setAutoLoginOpt] = useState(true);
     const [auth, setAuth] = useState(false);
@@ -28,7 +28,11 @@ export default function Login() {
         } else {
             setLoading(false);
         }
-    }, [token])
+        if (authString) {
+            window.location.replace('http://localhost:3000/#/getAuth');
+        }
+
+    }, [token, authString])
 
 
 
@@ -47,23 +51,34 @@ export default function Login() {
         }).then(res => res.json())
             .then(resdata => {
                 if (resdata.status === 'success') {
-                    console.log('인증된 회원 로그인');
-                    chrome.storage.local.set({ Refresh: resdata.data.accsessToken, Access: resdata.data.refreshToken }, () => {
-                    });
-                    chrome.storage.local.get(null, function (all) {
-                        setToken(JSON.stringify(all))
-                    })
+                    console.log(resdata);
+                    localStorage.setItem('Refresh', resdata.data.refreshToken);
+                    localStorage.setItem('Access', resdata.data.accessToken);
+                    setToken(localStorage.getItem('Refresh') + '/' + localStorage.getItem('Access'));
+                    // Chrome Storage API
+                    // chrome.storage.local.set({ Refresh: resdata.data.accsessToken, Access: resdata.data.refreshToken }, () => {
+                    // });
+                    // chrome.storage.local.get(null, function (all) {
+                    //     setToken(JSON.stringify(all))
+                    // })
 
                 }
                 else if (resdata.status === "fail") {
+                    console.log(resdata);
                     if (resdata.data.username) {
                         console.log("존재하지 않는 아이디입니다");
                         setState("존재하지 않는 아이디입니다");
 
                     }
                     else if (resdata.data.authenticated) {
-                        console.log("인증되지 않았습니다");
-                        setState("인증되지 않았습니다");
+
+                        // var reAuth = confirm('재인증을 시도하겠습니까?');
+                        // if (reAuth) {
+                        //     console.log(reAuth)
+                        // } else {
+                        //     console.log(reAuth)
+                        // }
+                        // console.log(reAuth);
 
                     } else if (resdata.data.password) {
                         console.log("비밀번호를 확인해주세요");
