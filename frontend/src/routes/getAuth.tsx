@@ -10,7 +10,8 @@ import {
 import LOGO from '../auth.png';
 
 export default function GetAuth() {
-    const [copied, copy, setCopied] = useCopy("RWQEqwerwqe");
+    const [authString, setAuthString] = useState<any | null>("");
+    const [copied, copy, setCopied] = useCopy(authString);
 
 
     const copyText = (event: any) => {
@@ -21,15 +22,10 @@ export default function GetAuth() {
         }, 3000);
     }
 
-    const [token, setToken] = useState<any | null>("");
-    const [authString, setAuthString] = useState<any | null>("");
+
     useEffect(() => {
-        if (localStorage.getItem('authString') || !localStorage.getItem('Access')) {
-            // setAuthString(localStorage.getItem('authString'));
-            setAuthString('wqr9tew8qr9et89qw8t')
-        } else {
-            alert('잘못된 접근입니다!');
-            window.location.replace('http://localhost:3000/?#/');
+        if (sessionStorage.getItem('authString') || !localStorage.getItem('Access')) {
+            setAuthString(sessionStorage.getItem('authString'));
         }
 
         // Chrome Storage api
@@ -42,7 +38,7 @@ export default function GetAuth() {
         // }
     }, [authString])
     const useChromeTab = () => {
-
+        chrome.tabs.create({ url: 'http://www.ssodam.com/' });
     }
 
 
