@@ -2,7 +2,8 @@
   "name": "서담서치",
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "http://localhost:3000/#/*"
   ],
   "description": "서담서치0.0.1v",
   "version": "1.0",

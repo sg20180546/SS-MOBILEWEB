@@ -105,10 +105,62 @@ const Banner = styled(container)`
 `;
 const BodyContainer = styled(container)`
 
-    // top:45px;
     width:97%;
 
 `;
+const LoadingPage = styled(container)`
+    position: absolute;
+    top: -1px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity: 1;
+    z-index: 10;
+    background-color : white;
+    height: 451px;
+    width: 360px;
+    border: 5px solid #f84e75;
+`;
+
+
+const ConfirmContainer = styled(container)`
+    position: absolute;
+    opacity: 0.5; 
+    z-index: 3;
+    background-color: #a3a3a8;
+    height: 445px;
+    width: 360px;
+`;
+const ConfirmBox = styled(container)`
+    position:absolute;
+    top: 170px;
+    z-index: 5;
+    opacity: 1;
+    background-color: white;
+    width:250px;
+    height:100px;
+    border: 2px solid ${mainColor};
+    text-align:center;
+
+`;
+const ConfirmBoxSelect = styled(container)`
+    width:45px;
+    height:25px;
+    font-size:7px;
+    line-height: 21px;
+    cursor:pointer;
+`;
+const Yes = styled(ConfirmBoxSelect)`
+    background-color:${mainColor};
+    : active{
+    background-color: #ba3b56;
+    }
+`;
+const No = styled(ConfirmBoxSelect)`
+    background-color:white;
+    border : 2px solid ${mainColor};
+`;
+
 
 const TableBodyContainer = styled(container)`
     position: relative;
@@ -126,7 +178,7 @@ const GrayBox = styled(container)`
     background-color: #d1d1d3;
     margin: 15px 0px;
     height: 40px;
-    width: 80%;
+    width: 90%;
     border-radius: 20px;
  `;
 
@@ -183,6 +235,9 @@ const GrayBoxMsg = styled.span`
     position:relative;
     top:12px;
     cursor:pointer;
+    :hover{
+        color:${mainColor};
+    }
 `;
 
 
@@ -228,6 +283,6 @@ export {
     SearchInput, DefaultInput, Navbar, NavLi, Banner, SearchButton, HomeImg, BodyContainer, LoginBox, LoginForm
     , LoginNavLi, LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, mainColor, Gray,
     HomeSpan, Table, TableHead, TableBodyContainer, SearchForm,
-    ErrorMsg, GrayBox, SmallImg, GrayBoxMsg
+    ErrorMsg, GrayBox, SmallImg, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage
 
 }
