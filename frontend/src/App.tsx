@@ -8,6 +8,7 @@ import SignUp from './routes/SignUp';
 import GetAuth from './routes/getAuth';
 import Login from './routes/Login';
 import Search from './routes/Search';
+import Developer from './routes/Developer';
 
 const App: React.FC = () => {
   return (
@@ -15,9 +16,10 @@ const App: React.FC = () => {
       <HashRouter>
         <Route path='/' component={Home} exact={true}></Route>
         <Route path='/signup' component={SignUp} exact={true}></Route>
-        <Route path='/getAuth' component={GetAuth} exact={true}></Route>
-        <Route path='/Login' component={Login} exact={true}></Route>
-        <Route path='/Search' component={Search} exact={true}></Route>
+        <Route path='/getauth' component={GetAuth} exact={true}></Route>
+        <Route path='/login' component={Login} exact={true}></Route>
+        <Route path='/search' component={Search} exact={true}></Route>
+        <Route path='/developer' component={Developer} exact={true} ></Route>
       </HashRouter>
     </div >
   );

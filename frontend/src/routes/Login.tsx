@@ -12,28 +12,32 @@ import {
 } from '../assets/styles/element';
 // img
 import LOGO from '../Simg.png';
+// env 
 
 export default function Login() {
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [authString, setAuthString] = useState<any | null>(false);
+    const [authString, getAuthStringAndRedirect] = useState<any | null>(false);
     const [loading, setLoading] = useState(true);
     const [autoLoginOpt, setAutoLoginOpt] = useState(true);
     const [state, setState] = useState("");
-    const [token, setToken] = useState('');
-    const [confirm, setConfirm] = useState(false);
-    const [moveAuth, setMoveAuth] = useState(false);
+    const [token, getToken] = useState(false);
+    const [confirmBoxModal, setConfirmBoxModal] = useState(false);
+    const [moveAuth, setMoveGetAuth] = useState(false);
 
     useEffect(() => {
         setLoading(false);
         if (moveAuth) {
-            fetch('https://kshired.com/v1/user/authenticate/' + email)
+            fetch(process.env.REACT_APP_API_URL + 'v1/user/authenticate/' + email)
                 .then(res => res.json())
                 .then(resdata => {
+                    console.log(resdata);
                     if (resdata.status === 'success') {
-                        console.log(resdata.data.authString);
+                        console.log(process.env.REACT_APP_API_URL + ' dot');
                         sessionStorage.setItem('authString', resdata.data.authString)
-                        setAuthString(true)
+                        sessionStorage.setItem('Page', resdata.data.target);
+                        getAuthStringAndRedirect(true)
                     } else {
                         throw new Error
                     }
@@ -51,53 +55,54 @@ export default function Login() {
             username: email,
             password: password
         }
-        fetch('https://kshired.com/v1/user/login', {
+        fetch(process.env.REACT_APP_API_URL + 'v1/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
-        }).then(res => res.json())
+        }).then(res => {
+            if (res.status === 401 || res.status === 404 || res.status === 200) {
+                return res.json();
+            }
+            else {
+                throw new Error;
+            }
+        }
+        )
             .then(resdata => {
                 if (resdata.status === 'success') {
                     console.log(resdata);
+                    localStorage.setItem('USERNAME', email);
                     localStorage.setItem('Refresh', resdata.data.refreshToken);
                     localStorage.setItem('Access', resdata.data.accessToken);
-                    setToken(localStorage.getItem('Refresh') + '/' + localStorage.getItem('Access'));
+                    getToken(true);
                     // Chrome Storage API
                     // chrome.storage.local.set({ Refresh: resdata.data.accsessToken, Access: resdata.data.refreshToken }, () => {
                     // });
                     // chrome.storage.local.get(null, function (all) {
-                    //     setToken(JSON.stringify(all))
+                    //     getToken(JSON.stringify(all))
                     // })
 
                 }
                 else if (resdata.status === "fail") {
-                    console.log(resdata);
+
                     if (resdata.data.username) {
-                        console.log("존재하지 않는 아이디입니다");
                         setState("존재하지 않는 아이디입니다");
 
                     }
                     else if (resdata.data.authenticated) {
-                        setConfirm(true);
-                        // var reAuth = confirm('재인증을 시도하겠습니까?');
-                        // if (reAuth) {
-                        //     console.log(reAuth)
-                        // } else {
-                        //     console.log(reAuth)
-                        // }
-                        // console.log(reAuth);
+                        setConfirmBoxModal(true);
+
 
                     } else if (resdata.data.password) {
-                        console.log("비밀번호를 확인해주세요");
                         setState("비밀번호를 확인해주세요");
-                    } else {
-                        throw new Error("서버가 터졌습니다..")
-                    }
+                    } else throw new Error
                 }
             }).catch(err => {
-                // 서버가 터졌을때 에러처리 구현예정
+
+                setState('서버가 고장났어요 ㅠㅠ');
+
             });
 
     }
@@ -105,12 +110,12 @@ export default function Login() {
     return (
         <div className='root' >
 
-            {authString ? <Redirect to="/getAuth" /> : <span />}
-
+            {authString ? <Redirect to="/getauth" /> : <Fragment />}
+            {token ? <Redirect to="/" /> : <Fragment />}
 
             {loading ? <Fragment> <LoadingPage>로딩중 </LoadingPage> </Fragment> :
                 <Fragment>
-                    {confirm && <Fragment><ConfirmContainer>
+                    {confirmBoxModal && <Fragment><ConfirmContainer>
 
                     </ConfirmContainer>
                         <ConfirmBox >미인증 회원입니다. <br />인증 페이지로 이동하시겠습니까?
@@ -118,8 +123,8 @@ export default function Login() {
                                 display: 'flex',
                                 justifyContent: 'space-between', position: 'relative',
                                 top: '10px', width: '120px'
-                            }}><Yes onClick={() => { setMoveAuth(true) }}>인증하기</Yes>
-                                <No onClick={() => { setConfirm(false) }}>다음에</No></div>
+                            }}><Yes onClick={() => { setMoveGetAuth(true) }}>인증하기</Yes>
+                                <No onClick={() => { setConfirmBoxModal(false) }}>다음에</No></div>
                         </ConfirmBox>
                     </Fragment>}
                     <Navbar>

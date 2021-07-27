@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 // import BoardName from '../components/Boardname';
 
 import {
-    SearchInput, Navbar, NavLi, SearchButton,
-    BodyContainer, TableBodyContainer, Table, SearchForm
+    SearchInput, Navbar, NavLi, SearchButton, Gray,
+    BodyContainer, TableBodyContainer, Table, SearchForm, SPLElement, SPLInput
 } from '../assets/styles/element';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
@@ -25,9 +25,14 @@ export default function Search() {
             setAuth(true);
         }
     }, [])
+    const LogOut = (event: any) => {
+        event.preventDefault()
+        chrome.storage.local.clear()
+        window.location.replace('http://localhost:3000/#/')
+    }
 
     const [posts, setPosts] = useState([]);
-
+    const [currentPage, setCurrentPage] = useState(1);
     const getSsodamPosts = () => {
         if (auth === false) {
 
@@ -48,18 +53,16 @@ export default function Search() {
 
             <Navbar>
                 <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
-                <Link to={{ pathname: '/Dashboard' }}> <NavLi>회원정보</NavLi></Link>
-                <a><NavLi>로그아웃</NavLi></a>
+                <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
+                <a><NavLi onClick={LogOut}>로그아웃</NavLi></a>
             </Navbar>
 
 
             <BodyContainer>
 
-                {/* <div style={{ position: 'fixed' }} ><HomeSpan>게시판</HomeSpan></div> */}
-                {/* <BoardName names={['전체게시판', '익명게시판']}></BoardName> */}
                 <Table>
-                    <thead style={{ position: 'fixed' }}>
-                        <tr>
+                    <thead style={{ position: 'fixed', width: '360px' }}>
+                        <tr style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'space-around', alignItems: "space-between" }}>
                             <th>게시판</th>
                             <th>제목</th>
                             <th>추천</th>
@@ -140,11 +143,26 @@ export default function Search() {
                         </tbody>
                     </TableBodyContainer>
                 </Table>
-
+                <div style={{
+                    display: 'flex', position: 'absolute', top: '360px', width: '170px', height: '15px'
+                    , justifyContent: 'center'
+                }}>
+                    <SPLElement>&lt;&lt;</SPLElement>
+                    <SPLElement style={{ width: '15px', backgroundColor: 'teal' }}>1</SPLElement>
+                    <SPLElement >2</SPLElement>
+                    <SPLElement >3</SPLElement>
+                    <SPLElement >4</SPLElement>
+                    <SPLElement >5</SPLElement>
+                    <SPLElement >&gt;&gt;</SPLElement>
+                    <SPLInput type="text" pattern="[0-9]+" ></SPLInput>
+                    <SPLElement >GO</SPLElement>
+                </div>
 
                 <SearchForm>
                     <SearchInput onChange={(e) => setSearchWord(e.target.value)}></SearchInput>
-                    <SearchButton onClick={() => getSsodamPosts()}></SearchButton>
+                    <SearchButton onClick={() => getSsodamPosts()}>
+                        <FontAwesomeIcon style={{ color: Gray }} icon='search' size='xs' />
+                    </SearchButton>
                 </SearchForm>
             </BodyContainer>
 

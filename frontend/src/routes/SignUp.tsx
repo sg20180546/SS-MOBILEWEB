@@ -35,24 +35,38 @@ export default function SignUp() {
                 username: Email,
                 password: password1
             }
-            fetch('https://kshired.com/v1/user/signup', {
+            fetch(process.env.REACT_APP_API_URL + 'v1/user/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(userInfo)
-            }).then(res => res.json())
+            }).then(res => {
+                if (res.status === 200 || res.status === 409) {
+                    return res.json();
+                }
+
+                else {
+                    throw new Error;
+                }
+            })
                 .then(resdata => {
                     if (resdata.status == "success") {
                         sessionStorage.setItem('authString', resdata.data.authString);
+                        sessionStorage.setItem('Page', resdata.data.target);
                         setAuthString(true);
                     } else {
                         if (resdata.data.username) {
                             setState('이미 존재하는 아이디입니다');
                         } else {
+                            throw new Error;
                         }
                     }
-                })
+                }).catch(err => {
+                    setState('서버가 터졌습니다 ㅠㅠ');
+                }
+
+                )
 
 
         }
@@ -65,7 +79,7 @@ export default function SignUp() {
                 <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
 
                 <Fragment>
-                    <Link to={{ pathname: '/Login' }}> <NavLi>로그인</NavLi></Link>
+                    <Link to={{ pathname: '/login' }}> <NavLi>로그인</NavLi></Link>
                     <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
                 </Fragment>
 
