@@ -11,7 +11,7 @@ import LOGO from '../Simg.png';
 
 
 
-export default function Home() {
+export default function Developer() {
 
     const [auth, setAuth] = useState(false);
     const [searchWord, setSearchWord] = useState('');
@@ -22,9 +22,8 @@ export default function Home() {
         }
     }, [])
 
-    const onClick = (event: any) => {
+    const LogOut = (event: any) => {
         event.preventDefault()
-        console.log('logout')
         chrome.storage.local.clear()
         window.location.replace('http://localhost:3000/#/')
     }
@@ -52,17 +51,13 @@ export default function Home() {
 
             <Navbar>
                 <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
-                {auth ? (
-                    <Fragment>
-                        <Link to={{ pathname: '/Dashboard' }}> <NavLi>회원정보</NavLi></Link>
-                        <NavLi onClick={onClick} >로그아웃</NavLi>
-                    </Fragment>
-                ) :
-                    <Fragment>
-                        <Link to={{ pathname: '/Login' }}> <NavLi>로그인</NavLi></Link>
-                        <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
-                    </Fragment>
-                }
+
+                <Fragment>
+                    <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
+                    <NavLi onClick={LogOut} >로그아웃</NavLi>
+                </Fragment>
+
+
             </Navbar>
             <BodyContainer>
 

@@ -72,16 +72,10 @@ const LoginNavLiClicked = styled(LoginNavLi)`
 
 const SearchButton = styled.button`
     position: relative;
-    left: 120px;
+    left: 75px;
     top: -26px;
     height: 43px;
-    width: 35px;
-
-    border-radius:10px;
-    background-color: ${mainColor};
-    :active{
-        background-color:#ba3b56;
-    }
+    width: 20px;
 `;
 
 
@@ -181,7 +175,20 @@ const GrayBox = styled(container)`
     width: 90%;
     border-radius: 20px;
  `;
-
+const SPLElement = styled(container)`
+    width: 15px;
+    height: 15px;
+    border: 1px solid ${Gray};
+    line-height: 15px;
+    font-size:5px;
+    cursor:pointer;
+`;
+const SPLInput = styled.input`
+    width: 25px;
+    height: 15px;
+    border: 1px solid ${Gray};
+    font-size:5px;
+`;
 
 
 // img
@@ -190,7 +197,7 @@ const Img = styled.img`
     position: relative;
 `;
 const HomeImg = styled(Img)`
-    height: 300px;
+    height: 280px;
 `;
 const LoginImg = styled(Img)`
     height: 200px;
@@ -211,7 +218,9 @@ const Form = styled.form`
 const LoginForm = styled(Form)`
 `;
 const SearchForm = styled(Form)`
-    height:80px;
+    position:absolute;
+    top:390px;
+    height:50px;
 `;
 
 
@@ -227,7 +236,8 @@ const LoginButton = styled.button`
 const HomeSpan = styled.span`
     font-size: 14px;
     color: ${Gray};
-    position: relative;
+    position: absolute;
+    top: 424px;
     text-align: center;
 `;
 const GrayBoxMsg = styled.span`
@@ -246,23 +256,10 @@ const ErrorMsg = styled.span`
     height: 10px;
     font-size:9px;
     position:relative;
+    top:5px;
     text-align: center;
-    ${props =>
-        css`
+    color:${mainColor};
 
-        // color:${Gray};
-        animation-name: bckanim;
-        animation-fill-mode:forwards, forwards;
-        animation-timing-function: ease-in-out;
-        animation-duration:3s;
-        animation-delay:0s;
-
-      @keyframes bckanim {
-        0% {color:${mainColor}; font-weight:900;}
-        50% {color:#f77994; fonte-weight:500;}
-        100% { color:${Gray}; font-weight:400;}
-      }
-    `}
 `;
 
 
@@ -283,6 +280,7 @@ export {
     SearchInput, DefaultInput, Navbar, NavLi, Banner, SearchButton, HomeImg, BodyContainer, LoginBox, LoginForm
     , LoginNavLi, LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, mainColor, Gray,
     HomeSpan, Table, TableHead, TableBodyContainer, SearchForm,
-    ErrorMsg, GrayBox, SmallImg, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage
+    ErrorMsg, GrayBox, SmallImg, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage,
+    SPLElement, SPLInput
 
 }
