@@ -2,10 +2,12 @@ import React, { FormEvent, Fragment, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Redirect } from 'react-router'
 import {
-    DefaultInput, Navbar, NavLi, BodyContainer, LoginButton, LoginForm, LoginImg, ErrorMsg
+    DefaultInput, Navbar, NavLi, BodyContainer, LoginButton, LoginForm, Img, ErrorMsg
 } from '../assets/styles/element';
 
-import LOGO from '../Simg.png';
+import LOGO from '../Simg.png'
+
+
 export default function SignUp() {
     const [Email, setEmail] = useState("");
     const [password1, setPassword1] = useState("")
@@ -63,7 +65,7 @@ export default function SignUp() {
                         }
                     }
                 }).catch(err => {
-                    setState('서버가 터졌습니다 ㅠㅠ');
+                    setState('서버가 고장났어요 ㅠㅠ');
                 }
 
                 )
@@ -87,7 +89,7 @@ export default function SignUp() {
 
 
             <BodyContainer>
-                <LoginImg src={LOGO}></LoginImg>
+                <Img style={{ height: '200px' }} src={LOGO}></Img>
                 <LoginForm onSubmit={(e: any) => { e.preventDefault(); }}>
                     <DefaultInput placeholder='Email' name='email' onChange={e => setEmail(e.target.value)} required ></DefaultInput>
                     <DefaultInput placeholder='비밀번호' name='password1' onChange={e => setPassword1(e.target.value)} type='password' required ></DefaultInput>

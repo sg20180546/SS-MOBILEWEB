@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react';
-import styles from '../css/Home.module.css';
+
 import { Link } from "react-router-dom";
 import {
-    SearchInput, Navbar, NavLi, Banner, SearchButton, HomeImg
+    SearchInput, Navbar, NavLi, SearchButton
     , BodyContainer, HomeSpan, mainColor, Gray, SearchForm
 } from '../assets/styles/element';
 

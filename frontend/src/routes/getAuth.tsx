@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 // import useCopy from 'use-copy';]
 import useCopy from 'use-copy';
 import {
-    Navbar, NavLi, BodyContainer, GrayBox, Banner, SmallImg, mainColor, GrayBoxMsg, Gray
+    Navbar, NavLi, BodyContainer, GrayBox, Img, mainColor, GrayBoxMsg,
+    Container
 } from '../assets/styles/element';
 
 import LOGO from '../auth.png';
@@ -58,8 +59,8 @@ export default function GetAuth() {
 
 
             <BodyContainer>
-                <Banner>회원 인증하기</Banner>
-                <SmallImg src={LOGO}></SmallImg>
+                <Container style={{ fontSize: '30px', height: '50px' }}>회원 인증하기</Container>
+                <Img style={{ height: '120px' }} src={LOGO}></Img>
                 <h5>서담서치 이용을 위해선, 회원 인증이 필요합니다 !</h5>
                 <GrayBox onClick={copyText}><GrayBoxMsg >{authString}</GrayBoxMsg>
                 </GrayBox >
