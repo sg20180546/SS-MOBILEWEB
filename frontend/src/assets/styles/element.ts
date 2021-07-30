@@ -3,6 +3,9 @@ import styled, { css } from "styled-components";
 
 const mainColor = "#f84e75"
 const Gray = "#B7B8CE"
+
+
+// ----------------Input---------------------- 
 const Input = styled.input`
     transition: border ease-in-out 0.5s;
     border: 3px solid rgba(0,0,0,0.5);
@@ -16,17 +19,22 @@ const DefaultInput = styled(Input)`
     width: 163px;
     height: 30px;
     margin-bottom: 6px;
-
-    }
 `;
 const SearchInput = styled(Input)`
     position: relative;
     width: 180px;
     height: 40px;
-
-  }
 `;
 
+const SPLInput = styled.input`
+    width: 25px;
+    height: 15px;
+    border: 1px solid ${Gray};
+    font-size:5px;
+`;
+
+
+// ----------------NavElements---------------------- 
 const Navbar = styled.nav`
     display: flex;
     position: relative;
@@ -42,7 +50,6 @@ const LoginNavBar = styled(Navbar)`
     border-bottom: none;
     padding-top: 10px;
     position: relative;
-    // top:65px;
 `;
 
 const NavLi = styled.ol`
@@ -67,42 +74,19 @@ const LoginNavLiClicked = styled(LoginNavLi)`
     border-bottom: 2px solid ${mainColor}; 
 `;
 
-
-
-
-const SearchButton = styled.button`
-    position: relative;
-    left: 75px;
-    top: -26px;
-    height: 43px;
-    width: 20px;
-`;
-
-
-
-//  Container : div
-const container = styled.div`
+// ----------------Div---------------------- 
+const Container = styled.div`
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center
+    justify-content:center;
     position: relative;
 `;
 
-
-const Banner = styled(container)`
-    justify-content:center;
-    font-size: 30px;
-    top:60px;
-    height: 50px;
-
-`;
-const BodyContainer = styled(container)`
-
+const BodyContainer = styled(Container)`
     width:97%;
-
 `;
-const LoadingPage = styled(container)`
+const LoadingPage = styled(Container)`
     position: absolute;
     top: -1px;
     display:flex;
@@ -117,7 +101,7 @@ const LoadingPage = styled(container)`
 `;
 
 
-const ConfirmContainer = styled(container)`
+const ConfirmContainer = styled(Container)`
     position: absolute;
     opacity: 0.5; 
     z-index: 3;
@@ -125,7 +109,7 @@ const ConfirmContainer = styled(container)`
     height: 445px;
     width: 360px;
 `;
-const ConfirmBox = styled(container)`
+const ConfirmBox = styled(Container)`
     position:absolute;
     top: 170px;
     z-index: 5;
@@ -137,7 +121,7 @@ const ConfirmBox = styled(container)`
     text-align:center;
 
 `;
-const ConfirmBoxSelect = styled(container)`
+const ConfirmBoxSelect = styled(Container)`
     width:45px;
     height:25px;
     font-size:7px;
@@ -156,7 +140,7 @@ const No = styled(ConfirmBoxSelect)`
 `;
 
 
-const TableBodyContainer = styled(container)`
+const TableBodyContainer = styled(Container)`
     position: relative;
     top:13px;
     height:280px;
@@ -164,18 +148,14 @@ const TableBodyContainer = styled(container)`
     width:100%;
 `;
 
-const LoginBox = styled(container)`
-    height: 250px;
-
-`;
-const GrayBox = styled(container)`
+const GrayBox = styled(Container)`
     background-color: #d1d1d3;
     margin: 15px 0px;
     height: 40px;
     width: 90%;
     border-radius: 20px;
  `;
-const SPLElement = styled(container)`
+const SPLElement = styled(Container)`
     width: 15px;
     height: 15px;
     border: 1px solid ${Gray};
@@ -183,30 +163,19 @@ const SPLElement = styled(container)`
     font-size:5px;
     cursor:pointer;
 `;
-const SPLInput = styled.input`
-    width: 25px;
-    height: 15px;
-    border: 1px solid ${Gray};
-    font-size:5px;
-`;
 
 
-// img
+// --------------------------------
+
+
 
 const Img = styled.img`
     position: relative;
 `;
-const HomeImg = styled(Img)`
-    height: 280px;
-`;
-const LoginImg = styled(Img)`
-    height: 200px;
-`;
-const SmallImg = styled(Img)`
-    height: 120px;
-`;
 
-// 
+
+// ----------------Form---------------------- 
+
 const Form = styled.form`
     display: flex;
     justify-content: center;
@@ -219,11 +188,11 @@ const LoginForm = styled(Form)`
 `;
 const SearchForm = styled(Form)`
     position:absolute;
-    top:390px;
+    top:333px;
     height:50px;
 `;
 
-
+// ----------------Button---------------------- 
 const LoginButton = styled.button`
     margin-top: 10px;
     height: 30px;
@@ -233,17 +202,27 @@ const LoginButton = styled.button`
     background-color: #ba3b56;
 }
 `;
+
+const SearchButton = styled.button`
+    position: relative;
+    left: 75px;
+    top: -26px;
+    height: 43px;
+    width: 20px;
+`;
+
+
+// ----------------Span---------------------- 
 const HomeSpan = styled.span`
     font-size: 14px;
     color: ${Gray};
     position: absolute;
-    top: 424px;
+    top: 365px;
     text-align: center;
 `;
 const GrayBoxMsg = styled.span`
     display:inline-block;
     position:relative;
-    top:12px;
     cursor:pointer;
     :hover{
         color:${mainColor};
@@ -259,10 +238,9 @@ const ErrorMsg = styled.span`
     top:5px;
     text-align: center;
     color:${mainColor};
-
 `;
 
-
+// ----------------TableElements---------------------- 
 
 const Table = styled.table`
       position:relative;
@@ -277,10 +255,10 @@ const TableHead = styled.thead`
 
 
 export {
-    SearchInput, DefaultInput, Navbar, NavLi, Banner, SearchButton, HomeImg, BodyContainer, LoginBox, LoginForm
-    , LoginNavLi, LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, mainColor, Gray,
+    SearchInput, DefaultInput, Navbar, NavLi, SearchButton, BodyContainer, LoginForm
+    , LoginNavLi, LoginButton, LoginNavBar, LoginNavLiClicked, mainColor, Gray,
     HomeSpan, Table, TableHead, TableBodyContainer, SearchForm,
-    ErrorMsg, GrayBox, SmallImg, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage,
-    SPLElement, SPLInput
+    ErrorMsg, GrayBox, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage,
+    SPLElement, SPLInput, Container, Img
 
 }

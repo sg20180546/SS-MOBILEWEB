@@ -1,9 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import {
-    SearchInput, Navbar, NavLi, SearchButton, HomeImg
+    SearchInput, Navbar, NavLi, SearchButton, Img
     , BodyContainer, HomeSpan, SearchForm, TableBodyContainer, Table, Gray
 } from '../assets/styles/element';
+import LogoutBtn from '../components/LogoutBtn';
+
+
+
 import '../assets/styles/fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -13,15 +17,6 @@ import LOGO from '../Simg.png';
 export default function Home() {
 
 
-    const logOut = (event: any) => {
-        event.preventDefault()
-        sessionStorage.clear();
-        localStorage.clear();
-        // Chrome Storage api
-        // chrome stoarge log out
-        // chrome.storage.local.clear()
-        setToken('');
-    }
 
 
     const [auth, setAuth] = useState(false);
@@ -68,7 +63,7 @@ export default function Home() {
                 {auth ? (
                     <Fragment>
                         <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
-                        <NavLi onClick={logOut} >로그아웃</NavLi>
+                        <LogoutBtn onClick={() => { setToken('') }}></LogoutBtn>
                     </Fragment>
                 ) :
                     <Fragment>
@@ -79,7 +74,7 @@ export default function Home() {
             </Navbar>
 
             <BodyContainer>
-                <HomeImg src={LOGO} ></HomeImg>
+                <Img style={{ height: '280px' }} src={LOGO} ></Img>
 
 
                 <SearchForm>

@@ -7,7 +7,7 @@ import { Redirect } from 'react-router';
 // element
 import {
     DefaultInput, Navbar, NavLi, LoginNavLi, BodyContainer, LoginForm
-    , LoginButton, LoginNavBar, LoginImg, LoginNavLiClicked, ErrorMsg, ConfirmContainer, ConfirmBox
+    , LoginButton, LoginNavBar, Img, LoginNavLiClicked, ErrorMsg, ConfirmContainer, ConfirmBox
     , Yes, No, LoadingPage
 } from '../assets/styles/element';
 // img
@@ -139,7 +139,7 @@ export default function Login() {
 
 
                     <BodyContainer>
-                        <LoginImg src={LOGO}></LoginImg>
+                        <Img style={{ height: '200px' }} src={LOGO}></Img>
                         <LoginForm onSubmit={handleLogin}>
                             <DefaultInput
                                 value={email}

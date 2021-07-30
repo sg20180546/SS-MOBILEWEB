@@ -9,6 +9,9 @@ import {
     SearchInput, Navbar, NavLi, SearchButton, Gray,
     BodyContainer, TableBodyContainer, Table, SearchForm, SPLElement, SPLInput
 } from '../assets/styles/element';
+import LogoutBtn from '../components/LogoutBtn';
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
@@ -20,16 +23,13 @@ export default function Search() {
     const [auth, setAuth] = useState(false);
     const [searchWord, setSearchWord] = useState('');
     const [tryLogin, setTryLogin] = useState(false);
+    const [token, setToken] = useState('');
     useEffect(() => {
         if (localStorage.getItem('token') !== null) {
             setAuth(true);
         }
     }, [])
-    const LogOut = (event: any) => {
-        event.preventDefault()
-        chrome.storage.local.clear()
-        window.location.replace('http://localhost:3000/#/')
-    }
+
 
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -54,7 +54,7 @@ export default function Search() {
             <Navbar>
                 <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
                 <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
-                <a><NavLi onClick={LogOut}>로그아웃</NavLi></a>
+                <LogoutBtn onClick={() => { setToken('') }}></LogoutBtn>
             </Navbar>
 
 
