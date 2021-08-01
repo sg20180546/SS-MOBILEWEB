@@ -49,7 +49,7 @@ export default function SignUp() {
                 }
 
                 else {
-                    throw new Error;
+                    throw new Error(`${res.status}`);
                 }
             })
                 .then(resdata => {
@@ -57,15 +57,12 @@ export default function SignUp() {
                         sessionStorage.setItem('authString', resdata.data.authString);
                         sessionStorage.setItem('Page', resdata.data.target);
                         setAuthString(true);
-                    } else {
-                        if (resdata.data.username) {
-                            setState('이미 존재하는 아이디입니다');
-                        } else {
-                            throw new Error;
-                        }
-                    }
+                    } else if (resdata.data.username) {
+                        setState('이미 존재하는 아이디입니다');
+                    } else throw new Error('Unknown')
+
                 }).catch(err => {
-                    setState('서버가 고장났어요 ㅠㅠ');
+                    setState('서버가 고장났어요 ㅠㅠ' + err.message);
                 }
 
                 )

@@ -144,8 +144,8 @@ export default function Search() {
                     </TableBodyContainer>
                 </Table>
                 <div style={{
-                    display: 'flex', position: 'absolute', top: '360px', width: '170px', height: '15px'
-                    , justifyContent: 'center'
+                    display: 'flex', position: 'absolute', top: '310px', width: '170px', height: '15px'
+                    , justifyContent: 'center',
                 }}>
                     <SPLElement>&lt;&lt;</SPLElement>
                     <SPLElement style={{ width: '15px', backgroundColor: 'teal' }}>1</SPLElement>
@@ -154,7 +154,8 @@ export default function Search() {
                     <SPLElement >4</SPLElement>
                     <SPLElement >5</SPLElement>
                     <SPLElement >&gt;&gt;</SPLElement>
-                    <SPLInput type="text" pattern="[0-9]+" ></SPLInput>
+                    {/* <input></input> */}
+                    <SPLInput></SPLInput>
                     <SPLElement >GO</SPLElement>
                 </div>
 

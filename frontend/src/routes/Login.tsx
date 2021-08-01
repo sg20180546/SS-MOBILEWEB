@@ -12,8 +12,9 @@ import {
 } from '../assets/styles/element';
 // img
 import LOGO from '../Simg.png';
-// env 
-
+// Error
+// import { ServerInvalidResError, ServerStatusError } from '../hook/Error';
+// import { validateResponse } from '../hook/Error';
 export default function Login() {
 
     const [email, setEmail] = useState('');
@@ -66,7 +67,7 @@ export default function Login() {
                 return res.json();
             }
             else {
-                throw new Error;
+                throw new Error(`${res.status}`);
             }
         }
         )
@@ -97,12 +98,11 @@ export default function Login() {
 
                     } else if (resdata.data.password) {
                         setState("비밀번호를 확인해주세요");
-                    } else throw new Error
-                }
+                    } else throw new Error('Unknown')
+                } else throw new Error('Unknown')
             }).catch(err => {
 
-                setState('서버가 고장났어요 ㅠㅠ');
-
+                setState('서버가 고장났어요 ㅠㅠ' + err.message);
             });
 
     }
