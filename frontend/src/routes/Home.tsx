@@ -16,31 +16,20 @@ import LOGO from '../Simg.png';
 
 export default function Home() {
 
-
-
-
-    const [auth, setAuth] = useState(false);
-    const [searchKeyWord, setSearchKeyWord] = useState('');
-    const [token, setToken] = useState('');
+    const [searchKeyWord, setSearchKeyWord] = useState<string>('');
+    const [userStatus, setUserStatus] = useState('logout');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setToken(localStorage.getItem('Refresh') + '/' + localStorage.getItem('Access'));
-        // Chrome Storage API
-        // chrome.storage.local.get(null, function (all) {
-        //     setToken(JSON.stringify(all))
-        // })
-        if (token.length > 30) {
-            setAuth(true);
-        } else {
-            setAuth(false);
+        if (localStorage.getItem('Access') || sessionStorage.getItem('Access')) {
+            setUserStatus('login');
         }
-    }, [token])
+    }, [userStatus])
 
 
     // 검색기능 - 추후 구현
     const getSsodamPosts = () => {
-        if (!auth) {
+        if (userStatus === 'logout') {
             // 미로그인: higlighted
             return;
         } else {
@@ -60,10 +49,10 @@ export default function Home() {
 
             <Navbar>
                 <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
-                {auth ? (
+                {userStatus === 'login' ? (
                     <Fragment>
                         <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
-                        <LogoutBtn onClick={() => { setToken('') }}></LogoutBtn>
+                        <LogoutBtn onClick={() => { setUserStatus('logout') }}></LogoutBtn>
                     </Fragment>
                 ) :
                     <Fragment>
@@ -84,7 +73,7 @@ export default function Home() {
                     </SearchButton>
 
                 </SearchForm>
-                {auth ? <HomeSpan>{localStorage.getItem("USERNAME")}님, 안녕하세요 !</HomeSpan> :
+                {userStatus === 'login' ? <HomeSpan>{localStorage.getItem("USERNAME")}님, 안녕하세요 !</HomeSpan> :
                     <HomeSpan color='#B7B8CE' >로그인 해주세요.</HomeSpan>}
             </BodyContainer>
 

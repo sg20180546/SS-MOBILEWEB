@@ -21,40 +21,47 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [authString, getAuthStringAndRedirect] = useState<any | null>(false);
     const [loading, setLoading] = useState(true);
-    const [autoLoginOpt, setAutoLoginOpt] = useState(true);
+    const [remember, setRemember] = useState(true);
     const [state, setState] = useState("");
-    const [token, getToken] = useState(false);
-    const [confirmBoxModal, setConfirmBoxModal] = useState(false);
-    const [moveAuth, setMoveGetAuth] = useState(false);
 
+    const [LoginStatus, changeLoginStatus] = useState('init');
+
+
+
+    // LoginStatus : init - > success
+    //                    - > IfyouWantGetAuth? Modal - >  YesFetchAuthString -> RedirectingToAuthPage
+    //                                                - >  NopeNextTimegetAuth
     useEffect(() => {
         setLoading(false);
-        if (moveAuth) {
+        if (LoginStatus === 'YesFetchAuthstring') {
             fetch(process.env.REACT_APP_API_URL + 'v1/user/authenticate/' + email)
-                .then(res => res.json())
+                .then(res => {
+                    if (res.status === 200) return res.json()
+                    else throw new Error(`${res.status}`);
+                }
+                )
                 .then(resdata => {
                     console.log(resdata);
                     if (resdata.status === 'success') {
-                        console.log(process.env.REACT_APP_API_URL + ' dot');
                         sessionStorage.setItem('authString', resdata.data.authString)
                         sessionStorage.setItem('Page', resdata.data.target);
-                        getAuthStringAndRedirect(true)
+                        changeLoginStatus('RedirectingToAuthPage...');
                     } else {
-                        throw new Error
                     }
                 })
                 .catch(
                     // 에러처리
                 )
         }
-    }, [moveAuth]);
+    }, [LoginStatus]);
 
 
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const user = {
             username: email,
-            password: password
+            password: password,
+            remember: remember
         }
         fetch(process.env.REACT_APP_API_URL + 'v1/user/login', {
             method: 'POST',
@@ -73,17 +80,14 @@ export default function Login() {
         )
             .then(resdata => {
                 if (resdata.status === 'success') {
-                    console.log(resdata);
                     localStorage.setItem('USERNAME', email);
-                    localStorage.setItem('Refresh', resdata.data.refreshToken);
-                    localStorage.setItem('Access', resdata.data.accessToken);
-                    getToken(true);
-                    // Chrome Storage API
-                    // chrome.storage.local.set({ Refresh: resdata.data.accsessToken, Access: resdata.data.refreshToken }, () => {
-                    // });
-                    // chrome.storage.local.get(null, function (all) {
-                    //     getToken(JSON.stringify(all))
-                    // })
+                    if (!remember) sessionStorage.setItem('Access', resdata.data.accessToken)
+                    else {
+                        localStorage.setItem('Refresh', resdata.data.refreshToken);
+                        localStorage.setItem('Access', resdata.data.accessToken);
+                    }
+
+                    changeLoginStatus('success')
 
                 }
                 else if (resdata.status === "fail") {
@@ -93,7 +97,7 @@ export default function Login() {
 
                     }
                     else if (resdata.data.authenticated) {
-                        setConfirmBoxModal(true);
+                        changeLoginStatus('IFyouWantToGetAuth? Modal')
 
 
                     } else if (resdata.data.password) {
@@ -110,12 +114,12 @@ export default function Login() {
     return (
         <div className='root' >
 
-            {authString ? <Redirect to="/getauth" /> : <Fragment />}
-            {token ? <Redirect to="/" /> : <Fragment />}
+            {LoginStatus === 'RedirectingToAuthPage...' ? <Redirect to="/getauth" /> : <Fragment />}
+            {LoginStatus === 'Success' ? <Redirect to="/" /> : <Fragment />}
 
             {loading ? <Fragment> <LoadingPage>로딩중 </LoadingPage> </Fragment> :
                 <Fragment>
-                    {confirmBoxModal && <Fragment><ConfirmContainer>
+                    {LoginStatus === 'IFyouWantToGetAuth? Modal' && <Fragment><ConfirmContainer>
 
                     </ConfirmContainer>
                         <ConfirmBox >미인증 회원입니다. <br />인증 페이지로 이동하시겠습니까?
@@ -123,8 +127,8 @@ export default function Login() {
                                 display: 'flex',
                                 justifyContent: 'space-between', position: 'relative',
                                 top: '10px', width: '120px'
-                            }}><Yes onClick={() => { setMoveGetAuth(true) }}>인증하기</Yes>
-                                <No onClick={() => { setConfirmBoxModal(false) }}>다음에</No></div>
+                            }}><Yes onClick={() => { changeLoginStatus('YesFetchAuthstring') }}>인증하기</Yes>
+                                <No onClick={() => { changeLoginStatus('NopeNextTimegetAuth') }}>다음에</No></div>
                         </ConfirmBox>
                     </Fragment>}
                     <Navbar>
@@ -158,8 +162,8 @@ export default function Login() {
                         <ErrorMsg>{state}</ErrorMsg>
                         <LoginNavBar>
 
-                            {autoLoginOpt ? <LoginNavLiClicked onClick={() => setAutoLoginOpt(!autoLoginOpt)}><li style={{ color: '#f84e75' }}>자동로그인</li></LoginNavLiClicked>
-                                : <LoginNavLi onClick={() => setAutoLoginOpt(!autoLoginOpt)}><li>자동로그인</li></LoginNavLi>}
+                            {remember ? <LoginNavLiClicked onClick={() => setRemember(!remember)}><li style={{ color: '#f84e75' }}>자동로그인</li></LoginNavLiClicked>
+                                : <LoginNavLi onClick={() => setRemember(!remember)}><li>자동로그인</li></LoginNavLi>}
 
 
 
