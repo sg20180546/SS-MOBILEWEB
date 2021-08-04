@@ -29,15 +29,6 @@ export default function GetAuth() {
             setAuthString(sessionStorage.getItem('authString'));
             setSsodamPage(sessionStorage.getItem('Page'));
         }
-
-        // Chrome Storage api
-        // chrome.storage.local.get(authString, function (auth) {
-        //     setAuthString(auth);
-        // })
-        // if (!authString) {
-        //     alert('잘못된 접근입니다!');
-        //     window.location.replace('http://localhost:3000/?#/');
-        // }
     }, [authString])
     const useChromeTab = () => {
         chrome.tabs.create({ url: 'http://ssodam.com/content/' + ssodamPage });

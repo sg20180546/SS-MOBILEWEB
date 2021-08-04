@@ -12,6 +12,7 @@ import {
 } from '../assets/styles/element';
 // img
 import LOGO from '../Simg.png';
+import saveToken from '../hook/saveToken';
 // Error
 // import { ServerInvalidResError, ServerStatusError } from '../hook/Error';
 // import { validateResponse } from '../hook/Error';
@@ -19,7 +20,6 @@ export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [authString, getAuthStringAndRedirect] = useState<any | null>(false);
     const [loading, setLoading] = useState(true);
     const [remember, setRemember] = useState(true);
     const [state, setState] = useState("");
@@ -32,6 +32,7 @@ export default function Login() {
     //                    - > IfyouWantGetAuth? Modal - >  YesFetchAuthString -> RedirectingToAuthPage
     //                                                - >  NopeNextTimegetAuth
     useEffect(() => {
+
         setLoading(false);
         if (LoginStatus === 'YesFetchAuthstring') {
             fetch(process.env.REACT_APP_API_URL + 'v1/user/authenticate/' + email)
@@ -41,7 +42,6 @@ export default function Login() {
                 }
                 )
                 .then(resdata => {
-                    console.log(resdata);
                     if (resdata.status === 'success') {
                         sessionStorage.setItem('authString', resdata.data.authString)
                         sessionStorage.setItem('Page', resdata.data.target);
@@ -81,14 +81,8 @@ export default function Login() {
             .then(resdata => {
                 if (resdata.status === 'success') {
                     localStorage.setItem('USERNAME', email);
-                    if (!remember) sessionStorage.setItem('Access', resdata.data.accessToken)
-                    else {
-                        localStorage.setItem('Refresh', resdata.data.refreshToken);
-                        localStorage.setItem('Access', resdata.data.accessToken);
-                    }
-
-                    changeLoginStatus('success')
-
+                    saveToken(remember, resdata.data.accessToken, resdata.data.refreshToken)
+                    changeLoginStatus('Success')
                 }
                 else if (resdata.status === "fail") {
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { Fragment, useEffect, useState } from 'react';
+import { Redirect } from 'react-router';
 import { Link } from "react-router-dom";
 
 // import SPosts from '../components/post';
@@ -22,8 +22,7 @@ export default function Search() {
 
     const [auth, setAuth] = useState(false);
     const [searchWord, setSearchWord] = useState('');
-    const [tryLogin, setTryLogin] = useState(false);
-    const [token, setToken] = useState('');
+    const [userStatus, setUserStatus] = useState('logout');
     useEffect(() => {
         if (localStorage.getItem('token') !== null) {
             setAuth(true);
@@ -50,11 +49,11 @@ export default function Search() {
 
     return (
         <div className='root'>
-
+            {userStatus === 'logout' ? <Redirect to="/" /> : <Fragment />}
             <Navbar>
                 <Link to={{ pathname: '/' }}> <NavLi>서담서치</NavLi> </Link>
                 <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
-                <LogoutBtn onClick={() => { setToken('') }}></LogoutBtn>
+                <LogoutBtn onClick={() => { setUserStatus('logout') }}></LogoutBtn>
             </Navbar>
 
 
