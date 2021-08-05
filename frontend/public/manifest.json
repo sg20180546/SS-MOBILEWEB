@@ -2,15 +2,14 @@
   "name": "서담서치",
   "permissions": [
     "storage",
-    "tabs",
-    "http://localhost:3000/#/*"
+    "tabs"
   ],
   "description": "서담서치0.0.1v",
   "version": "1.0",
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "index.html",
-    "default_title": "TEST"
+    "default_title": "서담서치"
   },
   "icons": {
     "16": "logo.png",

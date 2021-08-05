@@ -30,8 +30,15 @@ export default function LogoutBtn(props: any) {
         }
             // redirect 할지 고민중
         )
-        localStorage.clear();
-        sessionStorage.clear();
+
+        if (chrome.storage) {
+            chrome.storage.local.clear();
+            chrome.storage.sync.clear();
+        } else {
+            localStorage.clear();
+            sessionStorage.clear();
+        }
+
     }
 
 

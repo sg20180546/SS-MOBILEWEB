@@ -12,7 +12,7 @@ import '../assets/styles/fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import LOGO from '../Simg.png';
-
+import checkUserStatus from '../hook/userStatus';
 
 export default function Home() {
 
@@ -21,9 +21,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (localStorage.getItem('Access') || sessionStorage.getItem('Access')) {
-            setUserStatus('login');
-        }
+        checkUserStatus(setUserStatus);
     }, [userStatus])
 
 
