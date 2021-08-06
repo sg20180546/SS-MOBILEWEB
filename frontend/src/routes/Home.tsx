@@ -11,7 +11,7 @@ import LogoutBtn from '../components/LogoutBtn';
 import '../assets/styles/fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import LOGO from '../Simg.png';
+import LOGO from '../img/Simg.png';
 import checkUserStatus from '../hook/userStatus';
 
 export default function Home() {

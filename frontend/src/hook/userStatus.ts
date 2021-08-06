@@ -6,9 +6,6 @@
 //     }, [])
 // }
 
-
-
-
 export default async function checkUserStatus(setUserStatus: Function) {
 
     if (sessionStorage.getItem('Access')) {

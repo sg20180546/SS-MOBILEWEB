@@ -54,9 +54,9 @@ const GlobalStyle = createGlobalStyle`
       text-decoration: none;
   }
   
-  body{
+  html,body{
         width: 360px;
-        font-family: 'Poor Story';
+        font-family: Elice Digital Baeum, sans-serif;
   }
   .root{
       display: flex;
@@ -67,7 +67,7 @@ const GlobalStyle = createGlobalStyle`
       background-color: #FFFFFF;
       border: 5px solid #f84e75;
   }
-  
+
   
 `;
 
