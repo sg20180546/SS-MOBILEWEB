@@ -5,14 +5,13 @@ import {
     DefaultInput, Navbar, NavLi, BodyContainer, LoginButton, LoginForm, Img, ErrorMsg
 } from '../assets/styles/element';
 
-import LOGO from '../Simg.png'
+import LOGO from '../img/Simg.png'
 
 
 export default function SignUp() {
     const [Email, setEmail] = useState("");
     const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("");
-    const [moveAuth, setMoveAuth] = useState(false);
     const [state, setState] = useState('');
     const [authString, setAuthString] = useState(false)
 
@@ -88,7 +87,7 @@ export default function SignUp() {
             <BodyContainer>
                 <Img style={{ height: '200px' }} src={LOGO}></Img>
                 <LoginForm onSubmit={(e: any) => { e.preventDefault(); }}>
-                    <DefaultInput placeholder='Email' name='email' onChange={e => setEmail(e.target.value)} required ></DefaultInput>
+                    <DefaultInput placeholder='ID' name='email' onChange={e => setEmail(e.target.value)} required ></DefaultInput>
                     <DefaultInput placeholder='비밀번호' name='password1' onChange={e => setPassword1(e.target.value)} type='password' required ></DefaultInput>
                     <DefaultInput placeholder='비밀번호 확인' onChange={e => setPassword2(e.target.value)} type='password' required></DefaultInput>
                     <LoginButton onClick={handleSubmit}>회원가입</LoginButton>

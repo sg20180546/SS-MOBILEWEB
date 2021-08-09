@@ -8,12 +8,12 @@ import {
     Container
 } from '../assets/styles/element';
 
-import LOGO from '../auth.png';
-
+import LOGO from '../img/auth.png';
+import { useChromeTab } from '../hook/useChromeTab';
 export default function GetAuth() {
     const [authString, setAuthString] = useState<any | null>("");
     const [copied, copy, setCopied] = useCopy(authString);
-    const [ssodamPage, setSsodamPage] = useState<string | null>('');
+    const [ssodamPage, setSsodamPage] = useState<string | any>('');
 
     const copyText = (event: any) => {
         event.preventDefault();
@@ -27,12 +27,11 @@ export default function GetAuth() {
     useEffect(() => {
         if (sessionStorage.getItem('authString') || !localStorage.getItem('Access')) {
             setAuthString(sessionStorage.getItem('authString'));
-            setSsodamPage(sessionStorage.getItem('Page'));
+            setSsodamPage('http://ssodam.com/content/' + sessionStorage.getItem('Page'));
         }
+
     }, [authString])
-    const useChromeTab = () => {
-        chrome.tabs.create({ url: 'http://ssodam.com/content/' + ssodamPage });
-    }
+    const element = useChromeTab(ssodamPage);
 
 
 
@@ -56,10 +55,10 @@ export default function GetAuth() {
                 <GrayBox onClick={copyText}><GrayBoxMsg >{authString}</GrayBoxMsg>
                 </GrayBox >
                 {copied ? <h1 style={{ color: mainColor }}>복사가 완료되었습니다!</h1>
-                    : <h1 style={{ color: mainColor }}>서담 인증게시판에 위 난수를 댓글로 달아주세요.</h1>}
+                    : <h1 style={{ color: mainColor }}>아래 서담 게시물에 위 난수를 댓글로 달아주세요.</h1>}
 
                 <GrayBox >
-                    <GrayBoxMsg onClick={useChromeTab}>http://ssodam.com/content/{ssodamPage}</GrayBoxMsg>
+                    <GrayBoxMsg ref={element}>{ssodamPage}</GrayBoxMsg>
                 </GrayBox>
                 <h1 style={{ color: mainColor }}>클릭하면 페이지로 바로 이동합니다 !</h1>
             </BodyContainer>

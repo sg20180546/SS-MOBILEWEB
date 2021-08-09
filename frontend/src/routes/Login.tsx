@@ -11,7 +11,7 @@ import {
     , Yes, No, LoadingPage
 } from '../assets/styles/element';
 // img
-import LOGO from '../Simg.png';
+import LOGO from '../img/Simg.png';
 import saveToken from '../hook/saveToken';
 // Error
 // import { ServerInvalidResError, ServerStatusError } from '../hook/Error';

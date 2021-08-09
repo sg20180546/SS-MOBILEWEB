@@ -173,6 +173,16 @@ const Img = styled.img`
     position: relative;
 `;
 
+const BlurImg = styled(Img)`
+    z-index: 10;
+    transition: filter 0.3s ease-in-out, z-index 0.3s ease-in-out, opacity ease-in-out 0.3s;
+    :hover{
+        filter : blur(4px);
+        z-index:0;
+        opacity: 0.8;
+    }
+`;
+
 
 // ----------------Form---------------------- 
 
@@ -221,6 +231,7 @@ const HomeSpan = styled.span`
     text-align: center;
 `;
 const GrayBoxMsg = styled.span`
+    font-size:12px;
     display:inline-block;
     position:relative;
     cursor:pointer;
@@ -259,6 +270,6 @@ export {
     , LoginNavLi, LoginButton, LoginNavBar, LoginNavLiClicked, mainColor, Gray,
     HomeSpan, Table, TableHead, TableBodyContainer, SearchForm,
     ErrorMsg, GrayBox, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage,
-    SPLElement, SPLInput, Container, Img
+    SPLElement, SPLInput, Container, Img, BlurImg
 
 }
