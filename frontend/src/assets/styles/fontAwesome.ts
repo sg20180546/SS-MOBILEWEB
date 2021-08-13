@@ -1,4 +1,4 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCog, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faSearch);
+library.add(faSearch, faCog, faEllipsisH);

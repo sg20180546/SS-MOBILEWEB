@@ -1,5 +1,5 @@
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const mainColor = "#f84e75"
 const Gray = "#B7B8CE"
@@ -116,7 +116,7 @@ const ConfirmBox = styled(Container)`
     opacity: 1;
     background-color: white;
     width:250px;
-    height:100px;
+    height:150px;
     border: 2px solid ${mainColor};
     text-align:center;
 
@@ -140,13 +140,7 @@ const No = styled(ConfirmBoxSelect)`
 `;
 
 
-const TableBodyContainer = styled(Container)`
-    position: relative;
-    top:13px;
-    height:280px;
-    overflow-y: scroll;
-    width:100%;
-`;
+
 
 const GrayBox = styled(Container)`
     background-color: #d1d1d3;
@@ -156,12 +150,18 @@ const GrayBox = styled(Container)`
     border-radius: 20px;
  `;
 const SPLElement = styled(Container)`
-    width: 15px;
+    width: 20px;
     height: 15px;
     border: 1px solid ${Gray};
     line-height: 15px;
     font-size:5px;
     cursor:pointer;
+    :hover{
+        background-color:${Gray};
+    }
+    :active{
+        background-color:#9D9EB1;
+    }
 `;
 
 
@@ -216,7 +216,7 @@ const LoginButton = styled.button`
 const SearchButton = styled.button`
     position: relative;
     left: 75px;
-    top: -26px;
+    top: -27px;
     height: 43px;
     width: 20px;
 `;
@@ -254,9 +254,13 @@ const ErrorMsg = styled.span`
 // ----------------TableElements---------------------- 
 
 const Table = styled.table`
-      position:relative;
-      margin-bottom: 20px;
-      width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position: relative;
+    height:300px;
+    width:100%;
+    overflow-y: scroll;
 `;
 
 const TableHead = styled.thead`
@@ -268,7 +272,7 @@ const TableHead = styled.thead`
 export {
     SearchInput, DefaultInput, Navbar, NavLi, SearchButton, BodyContainer, LoginForm
     , LoginNavLi, LoginButton, LoginNavBar, LoginNavLiClicked, mainColor, Gray,
-    HomeSpan, Table, TableHead, TableBodyContainer, SearchForm,
+    HomeSpan, Table, TableHead, SearchForm,
     ErrorMsg, GrayBox, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage,
     SPLElement, SPLInput, Container, Img, BlurImg
 

@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import { normalize } from "styled-normalize";
+import { Gray, mainColor } from "./element";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -66,6 +67,18 @@ const GlobalStyle = createGlobalStyle`
       width: 360px;
       background-color: #FFFFFF;
       border: 5px solid #f84e75;
+  }
+  @keyframes highlight {
+    0% {
+    
+    }
+    70%{
+        color : ${mainColor}
+    }
+    100%{
+        color : ${Gray}
+    }
+    
   }
 
   
