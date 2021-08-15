@@ -14,9 +14,9 @@ function FrequentKeyWord({ state, setF5, initSearchOption, getFrequentKeyWords }
     }, [])
 
 
-    const first = addGetPostEvent({ setF5, initSearchOption })
-    const second = addGetPostEvent({ setF5, initSearchOption });
-    const third = addGetPostEvent({ setF5, initSearchOption });
+    const first = useAddGetPostEvent({ setF5, initSearchOption })
+    const second = useAddGetPostEvent({ setF5, initSearchOption });
+    const third = useAddGetPostEvent({ setF5, initSearchOption });
 
 
     return (
@@ -57,7 +57,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any) {
 export default connect(mapStateToProps, mapDispatchToProps)(FrequentKeyWord);
 
 
-const addGetPostEvent = ({ setF5, initSearchOption }: any) => {
+const useAddGetPostEvent = ({ setF5, initSearchOption }: any) => {
 
     const element = useRef<any>(null);
     useEffect(() => {

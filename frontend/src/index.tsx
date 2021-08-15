@@ -15,10 +15,8 @@ import './index.css';
 
 ReactDOM.render(
   <Provider store={store}>
-    {/* <ThemeProvider theme={nextTheme}> */}
     <GlobalStyle />
     <App />
-    {/* </ThemeProvider> */}
   </Provider>,
   document.getElementById('root')
 );

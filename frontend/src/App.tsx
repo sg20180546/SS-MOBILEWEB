@@ -8,7 +8,6 @@ import SignUp from './routes/SignUp';
 import GetAuth from './routes/getAuth';
 import Login from './routes/Login';
 import Developer from './routes/Developer';
-import refactorLogin from './hook/handleLogin';
 
 const App: React.FC = () => {
   return (

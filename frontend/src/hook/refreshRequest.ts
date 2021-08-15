@@ -26,17 +26,17 @@ const RefreshRequest = async () => {
             case Success200:
                 return response.json();
             case NoToken400:
-                await console.log('notoken? or more expire time')
+                // await console.log('notoken? or more expire time')
                 await removeTokenInStorage();
                 await checkUserStatus();
                 return;
             case InvalidToken401:
-                await console.log('invlaid?')
+                // await console.log('invlaid?')
                 await removeTokenInStorage();
                 await checkUserStatus();
                 return;
             default:
-                await console.log('defautl?')
+                // await console.log('defautl?')
                 await removeTokenInStorage();
                 await checkUserStatus();
                 return;
