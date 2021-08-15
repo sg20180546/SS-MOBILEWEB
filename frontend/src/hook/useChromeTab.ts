@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 const useChromeTab = (url: string) => {
 
-    const element = useRef<HTMLElement>(null);
+    const element = useRef<any>(null);
     useEffect(() => {
         const { current } = element;
         current?.addEventListener('click', () => {

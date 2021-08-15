@@ -80,8 +80,8 @@ export default function Login() {
         )
             .then(resdata => {
                 if (resdata.status === 'success') {
-                    localStorage.setItem('USERNAME', email);
-                    saveToken(remember, resdata.data.accessToken, resdata.data.refreshToken)
+
+                    saveToken(remember, resdata.data.accessToken, resdata.data.refreshToken, email)
                     changeLoginStatus('Success')
                 }
                 else if (resdata.status === "fail") {
@@ -96,11 +96,11 @@ export default function Login() {
 
                     } else if (resdata.data.password) {
                         setState("비밀번호를 확인해주세요");
-                    } else throw new Error('Unknown')
-                } else throw new Error('Unknown')
+                    } else throw new Error('Unknown2')
+                } else throw new Error('Unknown3')
             }).catch(err => {
-
-                setState('서버가 고장났어요 ㅠㅠ' + err.message);
+                if (err.message === 'Failed to fetch') setState('인터넷 연결을 확인하세요')
+                else setState('서버가 고장났어요 ㅠㅠ' + err.message);
             });
 
     }

@@ -1,24 +1,39 @@
 import React, { useState, useRef, useEffect } from "react";
-import Proptypes from "prop-types";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { mainColor } from "../assets/styles/element";
+import { useChromeTab } from "../hook/useChromeTab";
 
-export default function SPosts({ id = 0, title = 0, Up = 0, postDate = 0, url = 0 }) {
-
-    return (<a href='#' > <tr>
-        <td>{id}</td>
-        <td>{title}</td>
-        <td>{Up}</td>
-        <td>{postDate}</td>
-    </tr></a>)
+export default function SsodamPosts({ key = 0, id = 0, title = 0 }) {
+    const url = `http://www.ssodam.com/content/${id}`;
+    const element = useChromeTab(url);
+    return (
+        <TableResource ref={element} key={key}>
+            <PostNumber>{id}</PostNumber>
+            <PostTitle>{title}</PostTitle>
+        </TableResource>)
 }
 
 
 
+const TableResource = styled.tr`
+    display:flex;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    border-top: 1px dashed black;
+    padding:10px;
+    :hover{
+        color:${mainColor};
+    }
+`;
 
-// SsodamPost.propTypes = {
-//     id: Proptypes.number.isRequired,
-//     title: Proptypes.string.isRequired,
-//     UP: Proptypes.number.isRequired,
-//     DATE: Proptypes.string.isRequired,
-//     url: Proptypes.string.isRequired
-// }
+const PostNumber = styled.th`
+    width: 20%;
+    font-size: 13px;
+    line-height: 18px;
+`;
+
+const PostTitle = styled.th`
+    width: 80%;
+    text-align:left;
+`;

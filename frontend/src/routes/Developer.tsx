@@ -1,22 +1,24 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
 import { Link } from "react-router-dom";
 import {
-    Navbar, NavLi, BodyContainer, BlurImg, GrayBoxMsg, Gray
+    Navbar, NavLi, BodyContainer, BlurImg, GrayBoxMsg
 } from '../assets/styles/element';
 
 import LogoutBtn from '../components/LogoutBtn';
 import { useChromeTab } from '../hook/useChromeTab';
 import checkUserStatus from '../hook/userStatus';
 import SGCC from '../img/SGCC.png';
+// --
+import { connect } from 'react-redux';
+import { actionCreators } from '../redux/store';
 
 
+function Developer({ userState, ...rest }: any) {
 
-export default function Developer() {
-
-    const [userStatus, setUserStatus] = useState('login');
+    const [userStatus, setUserStatus] = useState('');
     useEffect(() => {
-        checkUserStatus(setUserStatus);
+        checkUserStatus();
     }, [userStatus])
 
     const RoenissGithub = useChromeTab('https://github.com/roeniss')
@@ -31,7 +33,7 @@ export default function Developer() {
 
                 <Fragment>
                     <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
-                    <LogoutBtn onClick={() => { setUserStatus('logout') }}></LogoutBtn>
+                    <LogoutBtn></LogoutBtn>
                 </Fragment>
 
 
@@ -42,7 +44,7 @@ export default function Developer() {
                     <BlurImg src={SGCC} style={{ height: '150px', width: '150px', borderRadius: '10px' }} />
                 </div>
                 <div style={{ position: 'relative', top: '40px', height: '150px', width: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <GrayBoxMsg ref={RoenissGithub}>SGCC ProjectManager Roeniss</GrayBoxMsg>
+                    <GrayBoxMsg ref={RoenissGithub} >SGCC ProjectManager Roeniss</GrayBoxMsg>
                     <GrayBoxMsg>SGCC Frontend sg201805</GrayBoxMsg>
                     <GrayBoxMsg>SGCC Backend Kshired</GrayBoxMsg>
                     <GrayBoxMsg>SGCC DataBase psst54</GrayBoxMsg>
@@ -55,3 +57,12 @@ export default function Developer() {
         </div >
     );
 }
+
+function mapStateToProps(state: any, ownProps: any) {
+    return { userState: state };
+}
+
+function mapDispatchToProps(dispatch: any, ownProps: any) {
+    return { setUserState: (state: string) => dispatch(actionCreators.setUserState(state)) }
+}
+export default connect(mapStateToProps, null)(Developer);
