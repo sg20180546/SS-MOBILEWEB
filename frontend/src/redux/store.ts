@@ -6,6 +6,10 @@ const SETPOST = 'setpost';
 const NOTFOUND = 'notfound';
 const SERVERERROR = 'servererror';
 const CONFIG = 'config';
+const LOADING = 'loading';
+const COMPELTE = 'complete';
+const GET = 'get';
+const CUSTOMERROR = 'customError';
 const setUserState = (log: string) => {
     return {
         type: log
@@ -29,10 +33,10 @@ const notFound = () => {
     }
 }
 
-const serverError = (errorMessage: string) => {
+const serverError = (msg: string) => {
     return {
         type: SERVERERROR,
-        errorMessage
+        msg
     }
 }
 
@@ -45,6 +49,26 @@ const configSearchOption = (type: any, size: any, page: any, keyWord: any) => {
             page,
             keyWord
         }
+    }
+}
+
+const setLoadingState = (state: string) => {
+    return {
+        type: state
+    };
+}
+
+
+const getFrequentKeywords = (state: any[]) => {
+    return {
+        type: GET,
+        payload: state
+    }
+}
+const setCustomError = (msg: string) => {
+    return {
+        type: CUSTOMERROR,
+        msg
     }
 }
 
@@ -67,7 +91,9 @@ const postReducer = (state = [], action: any): any => {
         case NOTFOUND:
             return action.msg;
         case SERVERERROR:
-            return action.errorMessage;
+            return action.msg;
+        case CUSTOMERROR:
+            return action.msg;
         default:
             return state;
     }
@@ -89,12 +115,34 @@ const searchOptionReducer = (state = initialSearchOption, action: any) => {
     }
 }
 
+const LoadingStateReducer = (state = true, action: any) => {
+    switch (action.type) {
+        case LOADING:
+            return true;
+        case COMPELTE:
+            return false;
+        default:
+            return state;
+    }
+}
+
+const FrequentKeywordsReducer = (state = [], action: any) => {
+    switch (action.type) {
+        case GET:
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 
 
 const rootReducer = combineReducers({
     userstate: userStateReducer,
     postData: postReducer,
-    searchOption: searchOptionReducer
+    searchOption: searchOptionReducer,
+    isLoading: LoadingStateReducer,
+    FrequentKeywords: FrequentKeywordsReducer
 })
 
 const store = createStore(rootReducer);
@@ -104,7 +152,10 @@ const actionCreators = {
     setPosts,
     notFound,
     serverError,
-    configSearchOption
+    setCustomError,
+    configSearchOption,
+    setLoadingState,
+    getFrequentKeywords
 }
 export { actionCreators }
 

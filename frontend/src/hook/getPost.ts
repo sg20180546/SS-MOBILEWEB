@@ -1,20 +1,23 @@
 import store, { actionCreators } from "../redux/store"
 import getToken from "./getToken";
-import { Refresh } from "./refresh";
+import { RefreshRequest } from "./refreshRequest";
 import checkUserStatus from "./userStatus";
 import $ from 'jquery';
+import { act } from "react-dom/test-utils";
+
+const Success = 200;
+const AccessTokenExpired = 401;
+const ResultNotFound = 404
+
+
 const getPost = async () => {
     const { userstate, searchOption } = store.getState();
-    const keyWord = $('input[name="keyWord"]').val();
-    if (!keyWord) {
-        console.log('no keword');
-        return;
-    }
-    const url = process.env.REACT_APP_API_URL + 'v1/search' + `?query=${keyWord}&type=${searchOption.type}&size=${searchOption.size}&page=${searchOption.page}`
+    setLoadingState('loading');
+    const url = process.env.REACT_APP_API_URL + 'v1/search' + `?query=${searchOption.keyWord}&type=${searchOption.type}&size=${searchOption.size}&page=${searchOption.page}`
     if (userstate !== 'login') {
         return;
     } else {
-        const Access = (await getToken()).Access
+        const Access = (await getToken()).Access;
         fetch(url,
             {
                 method: 'GET',
@@ -24,14 +27,13 @@ const getPost = async () => {
             }
         ).then(async (response) => {
             switch (response.status) {
-                case 200:
+                case Success:
                     return response.json();
-                case 401:
-                    await Refresh()
+                case AccessTokenExpired:
+                    await RefreshRequest()
                     await checkUserStatus();
-                    getPost();
                     return;
-                case 404:
+                case ResultNotFound:
                     resultNotFound();
                     return;
                 default:
@@ -40,7 +42,8 @@ const getPost = async () => {
             }
         }
         ).then(JSONresponse => {
-            if (JSONresponse) paintPost(JSONresponse)
+            setLoadingState('complete');
+            if (JSONresponse) paintPost(JSONresponse);
         })
 
 
@@ -64,9 +67,12 @@ const resultNotFound = () => {
 }
 
 const serverError = (response: any) => {
-    store.dispatch(actionCreators.serverError(`${response.status} ${response.statusText}`))
+    store.dispatch(actionCreators.serverError(`서버가 고장났어요 ㅠㅠ ${response.status}`))
 }
 
+export const setLoadingState = (state: string) => {
+    store.dispatch(actionCreators.setLoadingState(state));
+}
 
 
 

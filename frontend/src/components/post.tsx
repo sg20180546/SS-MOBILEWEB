@@ -1,17 +1,33 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Fragment } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { mainColor } from "../assets/styles/element";
 import { useChromeTab } from "../hook/useChromeTab";
-
-export default function SsodamPosts({ key = 0, id = 0, title = 0 }) {
+import { useMark } from "../hook/useMark";
+// import store from "../redux/store";
+function SsodamPosts({ key, id, title, searchKeyWord }: any) {
     const url = `http://www.ssodam.com/content/${id}`;
     const element = useChromeTab(url);
+    const Mark = useMark(title, searchKeyWord);
+
     return (
         <TableResource ref={element} key={key}>
-            <PostNumber>{id}</PostNumber>
-            <PostTitle>{title}</PostTitle>
+            <PostNumber key={key}>{id}</PostNumber>
+            <PostTitle id={key} key={key} ref={Mark}>{title}</PostTitle>
         </TableResource>)
 }
+
+const mapStateToProps = (state: any, ownprops: any) => {
+    return { searchKeyWord: state.searchOption.keyWord };
+}
+
+export default connect(mapStateToProps, null)(SsodamPosts);
+
+
+
+
+
 
 
 

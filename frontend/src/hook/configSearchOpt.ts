@@ -2,7 +2,6 @@ import store, { actionCreators } from "../redux/store"
 import { getPost } from "./getPost";
 import $ from 'jquery';
 async function configSearchOption() {
-    const { postData } = store.getState();
     await dispatchRadioButtonValue();
     getPost();
 }
@@ -11,11 +10,10 @@ async function configSearchOption() {
 export { configSearchOption };
 
 function dispatchRadioButtonValue() {
-    console.log('hey?');
+
     const changedTYPE = $('input[name="type"]:checked').val();
-    console.log(changedTYPE);
     const changedSIZE = $('input[name=size]:checked').val();
-    const keyWord = $('input[name=keyWord]').val();
+    const keyWord = store.getState().searchOption.keyWord;
     store.dispatch(actionCreators.configSearchOption(changedTYPE, changedSIZE, 1, keyWord))
 
 }

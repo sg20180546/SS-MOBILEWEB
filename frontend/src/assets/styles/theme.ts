@@ -16,4 +16,4 @@ const nextTheme: DefaultTheme = {
     // }
 };
 
-export { theme, nextTheme };
+// export { theme, nextTheme };

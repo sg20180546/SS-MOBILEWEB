@@ -5,7 +5,7 @@
 node_modules
 /.pnp
 .pnp.js
-src/hook/Error.ts
+src/hook/handleLogin.tsx
 # testing
 /coverage
 

@@ -4,40 +4,40 @@ import { Link } from "react-router-dom";
 import {
     SearchInput, Navbar, NavLi, SearchButton, Img
     , BodyContainer, HomeSpan, SearchForm, Table, Gray,
-    SPLElement, SPLInput, ConfirmContainer, ConfirmBox, Yes, No, mainColor
+    ConfirmContainer, ConfirmBox, Yes, No, mainColor
 } from '../assets/styles/element';
+// components
 import LogoutBtn from '../components/LogoutBtn';
 import SsodamPosts from '../components/post';
 import Pagenation from '../components/Pagenation';
-
+import LoadingScreen from '../components/LoadingScreen';
+import FrequentKeyWord from '../components/frequentKeyword';
 import '../assets/styles/fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+// img
 import LOGO from '../img/Simg.png';
-// --------------
+// hook
 import checkUserStatus from '../hook/userStatus';
-import getToken from '../hook/getToken';
-import { Refresh } from '../hook/refresh';
 import { useHighLight } from '../hook/useHighLight';
 import { getPost } from '../hook/getPost';
 import { configSearchOption } from '../hook/configSearchOpt';
-// ---
+// redux
 import { connect } from 'react-redux';
 import { actionCreators } from '../redux/store';
-// import store from '../redux/store';
+import { saveFrequentKeyWord } from '../components/frequentKeyword';
 
-function Home({ state, initSearchOption, ...rest }: any) {
+function Home({ state, initSearchOption, setLoadingState, ...rest }: any) {
 
-    const [loading, setLoading] = useState(true);
     const [USERNAME, getUSERNAME] = useState('unknownUSER');
     const [F5, setF5] = useState(false);
     const [searchOptionModal, setSearchOptionModal] = useState(false);
 
 
-    const { userstate, postData, searchOption } = state;
+    const { userstate, postData, searchOption, isLoading } = state;
 
     useEffect(() => {
         checkUserStatus(getUSERNAME);
+        setLoadingState('complete');
     }, [userstate])
 
     const highlightSpan = useHighLight('searchButton', 'click');
@@ -51,15 +51,14 @@ function Home({ state, initSearchOption, ...rest }: any) {
                 return '제목+내용';
             default:
                 return '??';
-                break;
         };
     }
 
 
     return (
         <div className='root'>
+            {isLoading && <LoadingScreen />}
             {searchOptionModal && <Fragment><ConfirmContainer></ConfirmContainer>
-
                 <ConfirmBox>
                     <div>
                         제목<input type='radio' name="type" value='title' defaultChecked={searchOption.type === 'title'} />
@@ -85,7 +84,9 @@ function Home({ state, initSearchOption, ...rest }: any) {
                 </ConfirmBox>
             </Fragment>}
             <Navbar>
-                <Link to={{ pathname: '/' }}> <NavLi onClick={() => { setF5(false) }}>서담서치</NavLi> </Link>
+                <Link to='/' replace > <NavLi onClick={() => {
+                    setF5(false)
+                }}>서담서치</NavLi> </Link>
                 {userstate === 'login' ? (
                     <Fragment>
                         <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
@@ -123,19 +124,17 @@ function Home({ state, initSearchOption, ...rest }: any) {
                                 {typeof postData === 'string' ? <tr style={{ position: 'relative', top: '100px', left: '100px' }}>{postData}</tr> :
                                     postData.posts?.map((post: any) => {
                                         if (post.id) return <SsodamPosts key={post.id} id={post.id} title={post.title} />
-
-                                    }
-                                    )}
+                                    })}
                             </tbody>
-
                         </Table>
 
-                        <Pagenation ></Pagenation>
+                        <Pagenation setF5={setF5} ></Pagenation>
 
                     </Fragment> :
-
-
-                    <Img style={{ height: '280px' }} src={LOGO} ></Img>}
+                    <Fragment>
+                        {userstate === 'login' && <FrequentKeyWord setF5={setF5} />}
+                        <Img style={{ height: '240px', top: '40px', zIndex: 1 }} src={LOGO} ></Img>
+                    </Fragment>}
 
 
                 <SearchForm onSubmit={(e) => { e.preventDefault() }}>
@@ -143,9 +142,15 @@ function Home({ state, initSearchOption, ...rest }: any) {
 
                     <SearchButton id="searchButton" name='keyWord' onClick={async (e) => {
                         e.preventDefault();
-                        await initSearchOption(searchOption.type, searchOption.size, 1, '')
+                        const keyWord = $('input[name="keyWord"]').val();
+                        if (!keyWord) {
+                            return;
+                        }
+                        await initSearchOption(searchOption.type, searchOption.size, 1, keyWord)
                         setF5(true);
+                        await saveFrequentKeyWord(`${keyWord}`);
                         await getPost();
+
                     }}>
                         <FontAwesomeIcon style={{ color: Gray }} icon='search' size='xs' />
                     </SearchButton>
@@ -164,6 +169,9 @@ function mapStateToProps(state: any, ownProps: any) {
 }
 
 function mapDispatchToProps(dispatch: any, ownProps: any) {
-    return { initSearchOption: (type: any, size: any, page: any, keyword: any) => dispatch(actionCreators.configSearchOption(type, size, page, keyword)) }
+    return {
+        initSearchOption: (type: any, size: any, page: any, keyword: any) => dispatch(actionCreators.configSearchOption(type, size, page, keyword)),
+        setLoadingState: (state: string) => dispatch(actionCreators.setLoadingState(state))
+    }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

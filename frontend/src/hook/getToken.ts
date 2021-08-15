@@ -8,6 +8,8 @@ export default async function getToken() {
     else if (chrome.storage) {
         const { Access, Refresh } = await loadChromeStorageToken().then(storageData => {
             const { Access, Refresh }: any = storageData;
+            console.log(Refresh);
+            console.log(Access);
             return { Access, Refresh };
         })
         return { Access, Refresh };

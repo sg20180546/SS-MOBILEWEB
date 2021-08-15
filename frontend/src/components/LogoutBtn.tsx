@@ -1,28 +1,24 @@
 
 import { useEffect, useRef } from "react";
 import { NavLi } from "../assets/styles/element";
-import store, { actionCreators } from "../redux/store";
+import getToken from "../hook/getToken";
+import { actionCreators } from "../redux/store";
+import { connect } from 'react-redux';
 
-
-export default function LogoutBtn() {
-    const onClick = () => store.dispatch(actionCreators.setUserState('logout'))
+function LogoutBtn({ dispatchLogout }: any) {
     const element = useRef<HTMLOListElement>(null);
 
 
-    const requestAPIthenStorageClear = () => {
-        requestAPILogout().then(() => {
-            StorageClear();
-        })
-    }
+
 
 
     useEffect(() => {
         const { current } = element;
-        current?.addEventListener('click', requestAPIthenStorageClear);
-        current?.addEventListener('click', onClick);
+        current?.addEventListener('click', requestLogoutThenRemoveToken);
+        current?.addEventListener('click', dispatchLogout);
         return (() => {
-            current?.removeEventListener('click', requestAPIthenStorageClear);
-            current?.removeEventListener('click', onClick);
+            current?.removeEventListener('click', requestLogoutThenRemoveToken);
+            current?.removeEventListener('click', dispatchLogout);
         })
     }, [])
 
@@ -33,24 +29,26 @@ export default function LogoutBtn() {
 }
 
 
-const StorageClear = (event?: any) => {
+const removeTokenInStorage = (event?: any) => {
     if (chrome.storage) {
-        chrome.storage.local.clear();
-        chrome.storage.sync.clear();
+        chrome.storage.sync.remove('Access');
+        chrome.storage.sync.remove('Refresh');
+        chrome.storage.sync.remove('USERNAME');
     } else {
-        localStorage.clear();
+        localStorage.removeItem('Access');
+        localStorage.removeItem('Refresh');
+        localStorage.removeItem('USERNAME');
         sessionStorage.clear();
     }
 
 }
 
 const requestAPILogout = async () => {
-    const ifRememberLoginTokenInLocal = localStorage.getItem('Access') ? localStorage.getItem('Access') : sessionStorage.getItem('Access');
-
+    const Access = (await getToken()).Access
     fetch(process.env.REACT_APP_API_URL + 'v1/user/logout', {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${ifRememberLoginTokenInLocal} `
+            'Authorization': `Bearer ${Access} `
         }
     }).then(
         res => {
@@ -67,4 +65,17 @@ const requestAPILogout = async () => {
         )
 }
 
-export { StorageClear };
+function mapDispatchToProps(dispatch: any, ownProps: any) {
+    return { dispatchLogout: () => dispatch(actionCreators.setUserState('logout')) };
+}
+
+
+export default connect(null, mapDispatchToProps)(LogoutBtn);
+
+
+const requestLogoutThenRemoveToken = async () => {
+    await requestAPILogout()
+    await removeTokenInStorage();
+}
+
+export { removeTokenInStorage };
