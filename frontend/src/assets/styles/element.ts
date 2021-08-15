@@ -1,5 +1,5 @@
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const mainColor = "#f84e75"
 const Gray = "#B7B8CE"
@@ -26,12 +26,6 @@ const SearchInput = styled(Input)`
     height: 40px;
 `;
 
-const SPLInput = styled.input`
-    width: 25px;
-    height: 15px;
-    border: 1px solid ${Gray};
-    font-size:5px;
-`;
 
 
 // ----------------NavElements---------------------- 
@@ -64,15 +58,18 @@ const NavLi = styled.ol`
     };
 `;
 
-const LoginNavLi = styled(NavLi)`
+const LoginNavLi = styled(NavLi) <{ remember: boolean }>`
     position:relative;
     left: -10px;
     margin: 10px 0px 0px 20px;
     font-size: 5px;
+    ${props =>
+        props.remember &&
+        css`
+        border-bottom: 2px solid ${mainColor}; 
+        `}
 `;
-const LoginNavLiClicked = styled(LoginNavLi)`
-    border-bottom: 2px solid ${mainColor}; 
-`;
+
 
 // ----------------Div---------------------- 
 const Container = styled.div`
@@ -86,19 +83,7 @@ const Container = styled.div`
 const BodyContainer = styled(Container)`
     width:97%;
 `;
-const LoadingPage = styled(Container)`
-    position: absolute;
-    top: -1px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    opacity: 1;
-    z-index: 10;
-    background-color : white;
-    height: 451px;
-    width: 360px;
-    border: 5px solid #f84e75;
-`;
+
 
 
 const ConfirmContainer = styled(Container)`
@@ -149,20 +134,7 @@ const GrayBox = styled(Container)`
     width: 90%;
     border-radius: 20px;
  `;
-const SPLElement = styled(Container)`
-    width: 20px;
-    height: 15px;
-    border: 1px solid ${Gray};
-    line-height: 15px;
-    font-size:5px;
-    cursor:pointer;
-    :hover{
-        background-color:${Gray};
-    }
-    :active{
-        background-color:#9D9EB1;
-    }
-`;
+
 
 
 // --------------------------------
@@ -271,9 +243,9 @@ const TableHead = styled.thead`
 
 export {
     SearchInput, DefaultInput, Navbar, NavLi, SearchButton, BodyContainer, LoginForm
-    , LoginNavLi, LoginButton, LoginNavBar, LoginNavLiClicked, mainColor, Gray,
+    , LoginNavLi, LoginButton, LoginNavBar, mainColor, Gray,
     HomeSpan, Table, TableHead, SearchForm,
-    ErrorMsg, GrayBox, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No, LoadingPage,
-    SPLElement, SPLInput, Container, Img, BlurImg
+    ErrorMsg, GrayBox, GrayBoxMsg, ConfirmContainer, ConfirmBox, Yes, No,
+    Container, Img, BlurImg
 
 }

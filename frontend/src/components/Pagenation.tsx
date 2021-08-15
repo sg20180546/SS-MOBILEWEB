@@ -4,8 +4,10 @@ import styled, { css } from 'styled-components';
 import $ from 'jquery';
 import store, { actionCreators } from "../redux/store";
 import { getPost } from '../hook/getPost';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { connect } from "react-redux";
+import { kMaxLength } from "buffer";
 
+let KEYforXpage = 10000;
 const height = '19px';
 
 let Default = function (page: number) {
@@ -14,7 +16,8 @@ let Default = function (page: number) {
 };
 
 
-export default function Pagenation() {
+function Pagenation({ setF5, initSearchOption, state }: any) {
+    // const { setF5 } = props;
     const { postData } = store.getState();
     const { currentPage, totalPages } = postData;
     const pageList = []
@@ -27,29 +30,50 @@ export default function Pagenation() {
         }
     })
 
-    return (<div style={{
-        display: 'flex', position: 'absolute', top: '310px', width: '230px', height: `${height}`
-        , justifyContent: 'center',
-    }}>
-        <Page onClick={(e) => { jumpPage(e, -4) }} >&lt;&lt;</Page>
-        {pageList.map(page => {
-            if (page.index <= totalPages) {
+    return (
+        <Fragment>
+            {typeof postData === 'string' ? <F5 onClick={() => {
+                initSearchOption('title', '30', 1, '');
+                setF5(false);
+            }}>새로고침</F5> :
+                <div style={{
+                    display: 'flex', position: 'absolute', top: '310px', width: '230px', height: `${height}`
+                    , justifyContent: 'center',
+                }}>
+                    <Page onClick={(e) => { jumpPage(e, -4) }} current={false}>&lt;&lt;</Page>
+                    {pageList.map(page => {
 
-                return <Page onClick={changePage} current={page.index === currentPage} >{page.index}</Page>
+                        if (page.index <= totalPages) {
 
-            } else {
+                            return <Page key={page.index} onClick={changePage} current={page.index === currentPage} >{page.index}</Page>
 
-                return <Page>X</Page>;
-            }
-        })}
-        <Page onClick={(e) => { jumpPage(e, 6) }}>&gt;&gt;</Page>
-        <Page onClick={changePage} current={totalPages === currentPage}>{totalPages}</Page>
-        <JUMPInput type='number' name='jumpInput' onKeyDown={(e) => e.keyCode > 47 && e.keyCode < 58 ? true : false} ></JUMPInput>
-        <Page onClick={jumpPageByInput} >GO</Page>
-    </div>);
+                        } else {
+
+                            return <Page key={KEYforXpage++} current={false}>X</Page>;
+                        }
+                    })}
+                    <Page onClick={(e) => { jumpPage(e, 6) }} current={false}>&gt;&gt;</Page>
+                    <Page onClick={changePage} current={totalPages === currentPage}>{totalPages}</Page>
+                    <JUMPInput type='number' name='jumpInput' onKeyDown={(e) => e.keyCode > 47 && e.keyCode < 58 ? true : false} ></JUMPInput>
+                    <Page onClick={jumpPageByInput} current={false}>GO</Page>
+                </div>}
+
+
+        </Fragment>);
 
 }
 
+const mapStateToProps = (state: any, ownprops: any) => {
+    return { state };
+}
+
+
+const mapDispatchToProps = (dispatch: any, ownprops: any) => {
+
+    return { initSearchOption: (type: any, size: any, page: any, keyword: any) => dispatch(actionCreators.configSearchOption(type, size, page, keyword)), }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pagenation);
 
 const changePage = async (event: any) => {
     const { searchOption } = store.getState();
@@ -57,7 +81,7 @@ const changePage = async (event: any) => {
     if (!newPage) {
         return;
     }
-    await store.dispatch(actionCreators.configSearchOption(searchOption.type, searchOption.size, newPage, ''))
+    await store.dispatch(actionCreators.configSearchOption(searchOption.type, searchOption.size, newPage, searchOption.keyWord))
     await getPost()
     if (table) {
         table.scrollTop = 0;
@@ -72,7 +96,7 @@ const jumpPage = async (event: any, direction: number) => {
         return;
     }
     event.preventDefault();
-    await store.dispatch(actionCreators.configSearchOption(searchOption.type, searchOption.size, newPage, ''))
+    await store.dispatch(actionCreators.configSearchOption(searchOption.type, searchOption.size, newPage, searchOption.keyWord))
     await getPost()
     if (table) {
         table.scrollTop = 0;
@@ -84,12 +108,12 @@ const jumpPageByInput = async (event: any) => {
     event.preventDefault();
     const newPage = $('input[name="jumpInput"]').val();
     if (!newPage) return;
-    await store.dispatch(actionCreators.configSearchOption(searchOption.type, searchOption.size, newPage, ''))
+    await store.dispatch(actionCreators.configSearchOption(searchOption.type, searchOption.size, newPage, searchOption.keyWord))
     await getPost()
 }
 
 const table = document.querySelector('#table');
-const Page = styled(Container) <{ current?: boolean }> `
+const Page = styled(Container) <{ current: boolean }> `
     width: 10%;
     height: ${height};
     border: 1px solid ${Gray};
@@ -106,6 +130,9 @@ const Page = styled(Container) <{ current?: boolean }> `
         props.current &&
         css`
         background-color:${mainColor};
+        :hover{
+            background-color:${mainColor};
+        }
         `}
 `;
 
@@ -119,4 +146,23 @@ const JUMPInput = styled.input`
         margin: 0;
     }
       
+`;
+
+const F5 = styled.div`
+    display: inline-block;
+    position: absolute;
+    text-align:center;
+    top : 310px;
+    width : 230px;
+    height:${height};
+    background-color:${Gray};
+    border-radius:3px;
+    cursor:pointer;
+    :hover{
+        background-color:#A6A6BA;
+    }
+    :active{
+        background-color:${mainColor}
+    }
+
 `;

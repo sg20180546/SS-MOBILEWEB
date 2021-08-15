@@ -4,7 +4,7 @@
     "storage",
     "tabs"
   ],
-  "description": "서담서치 1.0v",
+  "description": "서담 검색 익스엔션 서담서치",
   "version": "1.0",
   "manifest_version": 2,
   "browser_action": {

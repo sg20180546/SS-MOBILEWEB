@@ -80,7 +80,9 @@ const GlobalStyle = createGlobalStyle`
     }
     
   }
-
+  mark{
+      background-color: #F7FB96;
+  }
   
 `;
 

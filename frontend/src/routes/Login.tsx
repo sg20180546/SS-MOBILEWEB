@@ -7,18 +7,20 @@ import { Redirect } from 'react-router';
 // element
 import {
     DefaultInput, Navbar, NavLi, LoginNavLi, BodyContainer, LoginForm
-    , LoginButton, LoginNavBar, Img, LoginNavLiClicked, ErrorMsg, ConfirmContainer, ConfirmBox
-    , Yes, No, LoadingPage
+    , LoginButton, LoginNavBar, Img, ErrorMsg, ConfirmContainer, ConfirmBox
+    , Yes, No
 } from '../assets/styles/element';
 // img
 import LOGO from '../img/Simg.png';
 import saveToken from '../hook/saveToken';
+import { cssNumber } from 'jquery';
+import { configSearchOption } from '../hook/configSearchOpt';
 // Error
 // import { ServerInvalidResError, ServerStatusError } from '../hook/Error';
 // import { validateResponse } from '../hook/Error';
 export default function Login() {
 
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(true);
     const [remember, setRemember] = useState(true);
@@ -35,7 +37,7 @@ export default function Login() {
 
         setLoading(false);
         if (LoginStatus === 'YesFetchAuthstring') {
-            fetch(process.env.REACT_APP_API_URL + 'v1/user/authenticate/' + email)
+            fetch(process.env.REACT_APP_API_URL + 'v1/user/authenticate/' + username)
                 .then(res => {
                     if (res.status === 200) return res.json()
                     else throw new Error(`${res.status}`);
@@ -58,30 +60,33 @@ export default function Login() {
 
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const url = process.env.REACT_APP_API_URL + 'v1/user/login'
         const user = {
-            username: email,
+            username: username,
             password: password,
             remember: remember
         }
-        fetch(process.env.REACT_APP_API_URL + 'v1/user/login', {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
-        }).then(res => {
-            if (res.status === 401 || res.status === 404 || res.status === 200) {
-                return res.json();
+        }).then(response => {
+            console.log(response);
+            if (response.status === 401 || response.status === 404 || response.status === 200) {
+                return response.json();
             }
             else {
-                throw new Error(`${res.status}`);
+                throw new Error(`${response.status}`);
             }
         }
         )
             .then(resdata => {
+                console.log(resdata);
                 if (resdata.status === 'success') {
 
-                    saveToken(remember, resdata.data.accessToken, resdata.data.refreshToken, email)
+                    saveToken(remember, resdata.data.accessToken, resdata.data.refreshToken, username)
                     changeLoginStatus('Success')
                 }
                 else if (resdata.status === "fail") {
@@ -99,6 +104,7 @@ export default function Login() {
                     } else throw new Error('Unknown2')
                 } else throw new Error('Unknown3')
             }).catch(err => {
+                console.log(err);
                 if (err.message === 'Failed to fetch') setState('인터넷 연결을 확인하세요')
                 else setState('서버가 고장났어요 ㅠㅠ' + err.message);
             });
@@ -111,7 +117,7 @@ export default function Login() {
             {LoginStatus === 'RedirectingToAuthPage...' ? <Redirect to="/getauth" /> : <Fragment />}
             {LoginStatus === 'Success' ? <Redirect to="/" /> : <Fragment />}
 
-            {loading ? <Fragment> <LoadingPage>로딩중 </LoadingPage> </Fragment> :
+            {loading ? <Fragment> <div></div> </Fragment> :
                 <Fragment>
                     {LoginStatus === 'IFyouWantToGetAuth? Modal' && <Fragment><ConfirmContainer>
 
@@ -140,10 +146,10 @@ export default function Login() {
                         <Img style={{ height: '200px' }} src={LOGO}></Img>
                         <LoginForm onSubmit={handleLogin}>
                             <DefaultInput
-                                value={email}
+                                value={username}
                                 required
                                 placeholder='ID'
-                                onChange={e => setEmail(e.target.value)} />
+                                onChange={e => setUsername(e.target.value)} />
 
                             <DefaultInput name='password'
                                 type='password'
@@ -156,16 +162,14 @@ export default function Login() {
                         <ErrorMsg>{state}</ErrorMsg>
                         <LoginNavBar>
 
-                            {remember ? <LoginNavLiClicked onClick={() => setRemember(!remember)}><li style={{ color: '#f84e75' }}>자동로그인</li></LoginNavLiClicked>
-                                : <LoginNavLi onClick={() => setRemember(!remember)}><li>자동로그인</li></LoginNavLi>}
 
-
+                            <LoginNavLi remember={remember} onClick={() => setRemember(!remember)}><li>자동로그인</li></LoginNavLi>
 
                             <Link to={{ pathname: '/' }}>
-                                <LoginNavLi ><li>비밀번호찾기</li></LoginNavLi>
+                                <LoginNavLi remember={false}><li>서담서치</li></LoginNavLi>
                             </Link>
                             <Link to={{ pathname: '/signup' }}>
-                                <LoginNavLi ><li>회원가입</li></LoginNavLi>
+                                <LoginNavLi remember={false} ><li>회원가입</li></LoginNavLi>
                             </Link>
                         </LoginNavBar>
 

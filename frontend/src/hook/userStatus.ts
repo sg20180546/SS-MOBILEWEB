@@ -23,7 +23,6 @@ export default async function checkUserStatus(getUSERNAME?: Function) {
         if (getUSERNAME) getUSERNAME(localStorage.getItem('USERNAME'));
     }
     else {
-        console.log('logout');
         store.dispatch(actionCreators.setUserState('logout'))
     }
 }
