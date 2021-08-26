@@ -22,7 +22,7 @@ function Developer({ userState, ...rest }: any) {
     }, [userStatus])
 
     const RoenissGithub = useChromeTab('https://github.com/roeniss')
-
+    const KshiredGithub = useChromeTab('https://github.com/kshired');
 
 
     return (
@@ -46,7 +46,7 @@ function Developer({ userState, ...rest }: any) {
                 <div style={{ position: 'relative', top: '40px', height: '150px', width: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <GrayBoxMsg ref={RoenissGithub} >SGCC ProjectManager Roeniss</GrayBoxMsg>
                     <GrayBoxMsg>SGCC Frontend sg201805</GrayBoxMsg>
-                    <GrayBoxMsg>SGCC Backend Kshired</GrayBoxMsg>
+                    <GrayBoxMsg ref={KshiredGithub}>SGCC Backend Kshired</GrayBoxMsg>
                     <GrayBoxMsg>SGCC DataBase psst54</GrayBoxMsg>
                     <GrayBoxMsg>SGCC DataBase lee0594</GrayBoxMsg>
 

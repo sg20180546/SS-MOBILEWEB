@@ -30,7 +30,9 @@ export default function SignUp() {
         if (password1 !== password2) {
             event.preventDefault();
             setState('비밀번호가 일치하지 않습니다')
+            return;
         }
+        else if (!Email) return;
         else {
             const userInfo = {
                 username: Email,

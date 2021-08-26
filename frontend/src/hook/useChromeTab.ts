@@ -9,10 +9,10 @@ const useChromeTab = (url: string) => {
         const { current } = element;
         current?.addEventListener('click', () => {
             console.log(url);
-            chrome.tabs.create({ url });
+            chrome.tabs.create({ url, active: false });
         })
         return () => current?.removeEventListener('click', () => {
-            chrome.tabs.create({ url });
+            chrome.tabs.create({ url, active: false });
         })
     }, [url])
 

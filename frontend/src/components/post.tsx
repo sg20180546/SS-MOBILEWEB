@@ -5,11 +5,18 @@ import styled from 'styled-components';
 import { mainColor } from "../assets/styles/element";
 import { useChromeTab } from "../hook/useChromeTab";
 import { useMark } from "../hook/useMark";
-// import store from "../redux/store";
+import $ from 'jquery';
+var tabplacement = 0;
+
+
+
+
 function SsodamPosts({ key, id, title, searchKeyWord }: any) {
     const url = `http://www.ssodam.com/content/${id}`;
     const element = useChromeTab(url);
     const Mark = useMark(title, searchKeyWord);
+
+
 
     return (
         <TableResource ref={element} key={key}>
@@ -23,10 +30,6 @@ const mapStateToProps = (state: any, ownprops: any) => {
 }
 
 export default connect(mapStateToProps, null)(SsodamPosts);
-
-
-
-
 
 
 
