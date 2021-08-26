@@ -143,7 +143,7 @@ function Home({ state, initSearchOption, setLoadingState, ...rest }: any) {
                     <SearchButton id="searchButton" name='keyWord' onClick={async (e) => {
                         e.preventDefault();
                         const keyWord = $('input[name="keyWord"]').val();
-                        if (!keyWord) {
+                        if (!keyWord || userstate !== 'login') {
                             return;
                         }
                         await initSearchOption(searchOption.type, searchOption.size, 1, keyWord)
