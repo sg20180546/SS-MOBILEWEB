@@ -3,7 +3,6 @@ import getToken from "./getToken";
 import { RefreshRequest } from "./refreshRequest";
 import checkUserStatus from "./userStatus";
 import $ from 'jquery';
-import { act } from "react-dom/test-utils";
 
 const Success = 200;
 const AccessTokenExpired = 401;
@@ -14,6 +13,7 @@ const getPost = async () => {
     const { userstate, searchOption } = store.getState();
     setLoadingState('loading');
     const url = process.env.REACT_APP_API_URL + 'v1/search' + `?query=${searchOption.keyWord}&type=${searchOption.type}&size=${searchOption.size}&page=${searchOption.page}`
+    localStorage.setItem('previousPage', JSON.stringify(searchOption));
     if (userstate !== 'login') {
         return;
     } else {

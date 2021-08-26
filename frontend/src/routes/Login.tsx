@@ -87,6 +87,9 @@ export default function Login() {
                 if (resdata.status === 'success') {
 
                     saveToken(remember, resdata.data.accessToken, resdata.data.refreshToken, username)
+                    if (!remember) {
+                        localStorage.removeItem('previousPage')
+                    }
                     changeLoginStatus('Success')
                 }
                 else if (resdata.status === "fail") {

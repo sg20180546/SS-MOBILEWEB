@@ -25,17 +25,16 @@ import { configSearchOption } from '../hook/configSearchOpt';
 import { connect } from 'react-redux';
 import { actionCreators } from '../redux/store';
 import { saveFrequentKeyWord } from '../components/frequentKeyword';
-
+import { getPrevPage } from '../hook/ifYouSearched';
 function Home({ state, initSearchOption, setLoadingState, ...rest }: any) {
 
     const [USERNAME, getUSERNAME] = useState('unknownUSER');
     const [F5, setF5] = useState(false);
     const [searchOptionModal, setSearchOptionModal] = useState(false);
-
-
     const { userstate, postData, searchOption, isLoading } = state;
 
     useEffect(() => {
+        getPrevPage(setF5, userstate);
         checkUserStatus(getUSERNAME);
         setLoadingState('complete');
     }, [userstate])
@@ -96,6 +95,7 @@ function Home({ state, initSearchOption, setLoadingState, ...rest }: any) {
                     <Fragment>
                         <Link to={{ pathname: '/login' }}> <NavLi>로그인</NavLi></Link>
                         <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
+                        {/* <a href='https://naver.com' target='_blank'>되냐</a> */}
                     </Fragment>
                 }
             </Navbar>

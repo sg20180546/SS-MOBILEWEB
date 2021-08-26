@@ -5,9 +5,8 @@ import getToken from "../hook/getToken";
 import { actionCreators } from "../redux/store";
 import { connect } from 'react-redux';
 
-function LogoutBtn({ dispatchLogout }: any) {
+function LogoutBtn({ state, dispatchLogout }: any) {
     const element = useRef<HTMLOListElement>(null);
-
 
 
 
@@ -20,7 +19,7 @@ function LogoutBtn({ dispatchLogout }: any) {
             current?.removeEventListener('click', requestLogoutThenRemoveToken);
             current?.removeEventListener('click', dispatchLogout);
         })
-    }, [])
+    }, [state])
 
 
     return (
@@ -34,10 +33,13 @@ const removeTokenInStorage = (event?: any) => {
         chrome.storage.sync.remove('Access');
         chrome.storage.sync.remove('Refresh');
         chrome.storage.sync.remove('USERNAME');
+        localStorage.removeItem('previousPage');
+        sessionStorage.clear();
     } else {
         localStorage.removeItem('Access');
         localStorage.removeItem('Refresh');
         localStorage.removeItem('USERNAME');
+        localStorage.removeItem('previousPage');
         sessionStorage.clear();
     }
 
@@ -59,10 +61,13 @@ const requestAPILogout = async () => {
     ).then(res => {
     })
         .catch(err => {
-            console.log(err);
         }
             // redirect 할지 고민중
         )
+}
+
+function mapStateToProps(state: any, ownProps: any) {
+    return { state };
 }
 
 function mapDispatchToProps(dispatch: any, ownProps: any) {
@@ -70,7 +75,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any) {
 }
 
 
-export default connect(null, mapDispatchToProps)(LogoutBtn);
+export default connect(mapStateToProps, mapDispatchToProps)(LogoutBtn);
 
 
 const requestLogoutThenRemoveToken = async () => {
