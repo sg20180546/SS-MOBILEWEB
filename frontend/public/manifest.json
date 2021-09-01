@@ -4,7 +4,7 @@
     "storage"
   ],
   "description": "서담 검색 익스엔션 서담서치",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "index.html",
