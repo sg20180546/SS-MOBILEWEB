@@ -73,7 +73,6 @@ export default function Login() {
             },
             body: JSON.stringify(user)
         }).then(response => {
-            console.log(response);
             if (response.status === 401 || response.status === 404 || response.status === 200) {
                 return response.json();
             }
@@ -83,7 +82,6 @@ export default function Login() {
         }
         )
             .then(resdata => {
-                console.log(resdata);
                 if (resdata.status === 'success') {
 
                     saveToken(remember, resdata.data.accessToken, resdata.data.refreshToken, username)

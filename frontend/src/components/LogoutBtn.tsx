@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { NavLi } from "../assets/styles/element";
 import getToken from "../hook/getToken";
-import { actionCreators } from "../redux/store";
+import store, { actionCreators } from "../redux/store";
 import { connect } from 'react-redux';
 
 function LogoutBtn({ state, dispatchLogout }: any) {
@@ -14,12 +14,10 @@ function LogoutBtn({ state, dispatchLogout }: any) {
     useEffect(() => {
         const { current } = element;
         current?.addEventListener('click', requestLogoutThenRemoveToken);
-        current?.addEventListener('click', dispatchLogout);
         return (() => {
             current?.removeEventListener('click', requestLogoutThenRemoveToken);
-            current?.removeEventListener('click', dispatchLogout);
         })
-    }, [state])
+    }, [])
 
 
     return (
@@ -71,7 +69,9 @@ function mapStateToProps(state: any, ownProps: any) {
 }
 
 function mapDispatchToProps(dispatch: any, ownProps: any) {
-    return { dispatchLogout: () => dispatch(actionCreators.setUserState('logout')) };
+    return {
+        dispatchLogout: () => dispatch(actionCreators.setUserState('logout'))
+    };
 }
 
 
@@ -79,8 +79,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(LogoutBtn);
 
 
 const requestLogoutThenRemoveToken = async () => {
-    await requestAPILogout()
+    await requestAPILogout();
     await removeTokenInStorage();
+    store.dispatch(actionCreators.setUserState("logout"));
 }
 
 export { removeTokenInStorage };

@@ -86,16 +86,15 @@ function Home({ state, initSearchOption, setLoadingState, ...rest }: any) {
                 <Link to='/' replace > <NavLi onClick={() => {
                     setF5(false)
                 }}>서담서치</NavLi> </Link>
-                {userstate === 'login' ? (
+                {userstate === 'login' ?
                     <Fragment>
                         <Link to={{ pathname: '/developer' }}> <NavLi>만든사람</NavLi></Link>
                         <LogoutBtn></LogoutBtn>
-                    </Fragment>
-                ) :
+                    </Fragment> :
+
                     <Fragment>
                         <Link to={{ pathname: '/login' }}> <NavLi>로그인</NavLi></Link>
                         <Link to={{ pathname: '/signup' }}> <NavLi>회원가입</NavLi> </Link >
-                        {/* <a href='https://naver.com' target='_blank'>되냐</a> */}
                     </Fragment>
                 }
             </Navbar>

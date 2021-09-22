@@ -22,14 +22,9 @@ export const getPrevPage = async (setF5: Function, userstate: string) => {
 const ifYouSearched = (): any => {
     let previousPage = localStorage.getItem('previousPage');
     if (!previousPage) return false;
-    // console.log('ifyouserached ?' + JSON.parse(previousPage));
     if (JSON.parse(previousPage)) {
-        console.log('works?');
         return JSON.parse(previousPage);
     }
-
-
-
     return false;
 }
 
