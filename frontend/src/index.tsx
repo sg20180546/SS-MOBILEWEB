@@ -1,22 +1,26 @@
 
 import ReactDOM from 'react-dom';
-// import './index.css';
 import App from './App';
 
-// reset
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import store from './redux/store'
 import { GlobalStyle } from "./assets/styles/global-styles";
 import { Provider } from 'react-redux';
-// import { nextTheme } from "./assets/styles/theme";
-// import { ThemeProvider } from "styled-components";
-import './index.css';
 
-// import Use
+import './index.css';
 
 ReactDOM.render(
   <Provider store={store}>
     <GlobalStyle />
-    <App />
+{process.env.REACT_APP_ENVIRONMENT==='extension' ? <App/> 
+:
+  <BrowserRouter>
+    <Switch>
+      <Route exact path='/ssodamsearch' component={App}></Route>
+    </Switch>
+   </BrowserRouter>}
+
+
   </Provider>,
   document.getElementById('root')
 );

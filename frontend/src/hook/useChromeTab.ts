@@ -8,11 +8,18 @@ const useChromeTab = (url: string) => {
     useEffect(() => {
         const { current } = element;
         current?.addEventListener('click', () => {
-            console.log(url);
-            chrome.tabs.create({ url, active: false });
-        })
+            if(chrome.tabs){ 
+            chrome.tabs.create({ url, active: false });   
+            }else{
+                window.open(url, '_blank')
+            }
+            })
         return () => current?.removeEventListener('click', () => {
-            chrome.tabs.create({ url, active: false });
+            if(chrome.tabs){
+                chrome.tabs.create({ url, active: false });
+            }else{
+                window.open(url, '_blank')
+            }
         })
     }, [url])
 
